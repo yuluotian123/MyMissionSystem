@@ -14,7 +14,6 @@ namespace YLT.MissionSystem
         public readonly MissionRequire<T>[] requires;
         public readonly MissionRequireMode requireMode;
         public readonly bool isSingleRequire;
-        private readonly MissionReward[] rewards;
         
         /// <summary>
         /// 初始化任务原型
@@ -25,7 +24,7 @@ namespace YLT.MissionSystem
         /// <param name="requireMode"></param>
         /// <param name="property"></param>
         /// <exception cref="Exception"></exception>
-        public MissionPrototype(string id, [DisallowNull] MissionRequire<T>[] requires, MissionReward[] rewards = null, MissionRequireMode requireMode = default, MissionProperty property = null)
+        public MissionPrototype(string id, [DisallowNull] MissionRequire<T>[] requires, MissionRequireMode requireMode = default, MissionProperty property = null)
         {
             /* check if mission id is valid */
             if (string.IsNullOrEmpty(id)) 
@@ -37,19 +36,10 @@ namespace YLT.MissionSystem
                 throw new Exception("mission requires cannot be null or empty");
 
             this.requires = requires;
-            this.rewards = rewards;
             this.requireMode = requireMode;
             this.property = property;
             
             this.isSingleRequire = requires.Length == 1;
-        }
-
-        /// <summary>兑现所有的奖励</summary>
-        public void ApplyReward()
-        {
-            if (rewards is null || rewards.Length == 0) return;
-            foreach (var reward in rewards)
-                reward.ApplyReward();
         }
     }
 
@@ -58,13 +48,6 @@ namespace YLT.MissionSystem
     {
         All,
         Any
-    }
-
-    /// <summary>任务奖励</summary>
-    public abstract class MissionReward
-    {
-        /// <summary>兑现玩家的奖励</summary>
-        public abstract void ApplyReward();
     }
 
     /// <summary>任务附加属性描述</summary>
@@ -155,9 +138,6 @@ namespace YLT.MissionSystem
             if (!proto.isSingleRequire)
                 _unfinishedHandles.AddRange(handles);
         }
-
-        /// <summary>兑现任务的奖励</summary>
-        public void ApplyReward() => proto.ApplyReward();
 
         /// <summary>向任务发送玩家行为消息并检查任务是否完成以及是否发生状态变化</summary>
         /// <param name="message">玩家行为消息</param>

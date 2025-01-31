@@ -11,11 +11,19 @@ namespace YLT.MissionSystem
         private readonly Dictionary<string, NodeMission> activeNodes = new Dictionary<string, NodeMission>();
         private readonly Queue<NodeMission> buffer = new Queue<NodeMission>();
 
+        //子任务链
+        private readonly Dictionary<string,SubMissionChain> subMissionChains = new Dictionary<string, SubMissionChain>();
+
+        //该任务链是否有父对象
+        public MissionChainHandle parentHandle = null;
+
+
         public bool IsCompleted
         {
             get 
             {
-                    return activeNodes.Count == 0;
+
+                return activeNodes.Count == 0 && subMissionChains.Count == 0;
             }
         }
 
@@ -56,8 +64,26 @@ namespace YLT.MissionSystem
             }
         }
 
+        public void OnMissionChainComplete(string missionchainId)
+        {
+            if (parentHandle == null) return;
+
+            if (!parentHandle.subMissionChains.Remove(missionchainId, out var node)) return;
+
+            foreach (var outConnection in node.outConnections.Where(c => ((ConnectionBase)c).IsAvailable && ((ConnectionBase)c).IsSequence))
+            {
+                ExecuteNode(outConnection.targetNode as NodeBase);
+            }
+
+            // 检测在此任务链结束后母任务链是否也结束了（处理嵌套任务链的情况）
+            if (parentHandle.IsCompleted)
+            {
+                parentHandle.OnMissionChainComplete(parentHandle.chain.name);
+            }
+        }
+
         /// <summary>execute given node</summary>
-        private void ExecuteNode(NodeBase node)
+        public void ExecuteNode(NodeBase node)
         {   
             if (node is null) return;
 
@@ -78,6 +104,11 @@ namespace YLT.MissionSystem
                 case NodeStart startNode:
                     foreach (var outConnection in node.outConnections.Where(c => ((ConnectionBase)c).IsAvailable && ((ConnectionBase)c).IsSequence))
                         ExecuteNode(outConnection.targetNode as NodeBase);
+                    break;
+
+                case SubMissionChain chainNode:
+                    chainNode.StartSubMission(this);
+                    subMissionChains.Add(chainNode.subGraph.name,(SubMissionChain)node);
                     break;
             }
 

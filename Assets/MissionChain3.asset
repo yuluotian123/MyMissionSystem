@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bc10ea020d44118faa5d1957a2b66e, type: 3}
+  m_Name: MissionChain3
+  m_EditorClassIdentifier: 
+  _serializedGraph: '{"type":"YLT.MissionSystem.MissionChain","nodes":[{"$type":"YLT.MissionSystem.NodeStart","$id":"0"},{"action":{"message":"InTree2","_node":{"$ref":"1"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":771.8401,"y":-158.1741},"$type":"YLT.MissionSystem.NodeAction","$id":"1"},{"_requires":[{"eventType":"CompleteDialogue","count":1,"_unfolded":true,"_node":{"$ref":"2"},"$type":"MyMissionRequireTemplate"}],"_UID":"0816df43-1e23-420e-ad85-23e54e9d4a7e","_position":{"x":453.8485,"y":65.45459},"$type":"YLT.MissionSystem.NodeMission","$id":"2"}],"connections":[{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"2"},"$type":"YLT.MissionSystem.ConnectionBase"}],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
+  _objectReferences: []
+  _graphSource:
+    _version: 3.3
+    _category: 
+    _comments: 
+    _translation: {x: 115.56824, y: 366.80972}
+    _zoomFactor: 0.68883103
+  _haltSerialization: 0
+  _externalSerializationFile: {fileID: 0}

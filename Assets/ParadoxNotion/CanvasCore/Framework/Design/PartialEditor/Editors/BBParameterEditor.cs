@@ -163,6 +163,7 @@ namespace NodeCanvas.Editor
                 }
 
                 if ( bbParam.bb != null ) {
+
                     foreach ( var actualBB in bbParam.bb.GetAllParents(true).Reverse() ) {
                         var variables = actualBB.variables.Values.Where(v => v.CanConvertTo(bbParam.varType));
                         foreach ( var variable in variables ) {

@@ -26,7 +26,7 @@ namespace YLT.MissionSystem
         {
             get
             {
-                var proto = new MissionPrototype<object>(MissionId, _requires.ToArray(), null, _mode);
+                var proto = new MissionPrototype<object>(MissionId, _requires.ToArray(), _mode);
                 return proto;
             }
         }
