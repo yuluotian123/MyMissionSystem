@@ -10,7 +10,7 @@ using UnityEditor;
 
 namespace YLT.MissionSystem
 {
-    [ParadoxNotion.Design.Icon("Action"), Color("b1d480"), Name("Mission")]
+    [ParadoxNotion.Design.Icon("Eye"), Color("b1d480"), Name("Mission")]
     [Description("setup a new mission")]
     public class NodeMission : NodeBase
     {
@@ -19,6 +19,7 @@ namespace YLT.MissionSystem
         [SerializeField] private readonly List<MissionRequireTemplate> _requires =
             new List<MissionRequireTemplate>();
         [SerializeField] private MissionRequireMode _mode;
+        [SerializeField] private MissionProperty _property;
 
         /// <summary>create mission prototype</summary>
         /// <returns></returns>
@@ -26,7 +27,7 @@ namespace YLT.MissionSystem
         {
             get
             {
-                var proto = new MissionPrototype<object>(MissionId, _requires.ToArray(), _mode);
+                var proto = new MissionPrototype<object>(MissionId, _requires.ToArray(), _mode, _property);
                 return proto;
             }
         }
@@ -68,6 +69,11 @@ namespace YLT.MissionSystem
 
         protected override void OnNodeGUI()
         {
+            GUILayout.Label("<color=#fffde3><b>任务属性</b></color>", Styles.leftLabel);
+            GUILayout.BeginVertical("box");
+            GUILayout.EndVertical();
+
+            GUILayout.Label("<color=#fffde3><b>任务需求</b></color>", Styles.leftLabel);
             GUILayout.BeginVertical(Styles.roundedBox);
             if (_requires.Count == 0)
             {
@@ -90,7 +96,11 @@ namespace YLT.MissionSystem
         }
 
         protected override void OnNodeInspectorGUI()
-        {            
+        {
+            GUILayout.Label("<color=#fffde3><size=12><b>任务属性</b></size></color>");
+            GUILayout.BeginVertical("box");
+            GUILayout.EndVertical();
+
             /* draw requires */
             GUILayout.Label("<color=#fffde3><size=12><b>需求列表</b></size></color>");
             GUILayout.BeginVertical("box");

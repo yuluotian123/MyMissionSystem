@@ -53,7 +53,8 @@ namespace YLT.MissionSystem
     /// <summary>任务附加属性描述</summary>
     public abstract class MissionProperty
     { 
-
+        public bool isDecorator = false;
+        public bool isImplicit = false;
     }
     
     /// <summary>决定玩家具体要执行的行为</summary>
@@ -251,7 +252,6 @@ namespace YLT.MissionSystem
             {
                 if (mission.id.Split('.')[0] == graphID)
                 {
-                    Debug.Log(mission.id);
                     RemoveMission(mission.id);
                 }
             }

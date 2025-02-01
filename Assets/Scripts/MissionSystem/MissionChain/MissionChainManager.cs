@@ -46,8 +46,12 @@ namespace YLT.MissionSystem
             // Remove the handle if the mission is finished
             if (handle.IsCompleted)
             {
-                handle.OnMissionChainComplete(missionChainId);
-                handles.Remove(missionChainId);
+                handle.OnMissionChainComplete(missionChainId, t =>
+                {
+                    Debug.Log("IsComplete" + t + " HandleCount:" + handles.Count);
+                    handles.Remove(t);
+                    Debug.Log("AfterRemove:" + handles.Count);
+                });
             }
         }
 

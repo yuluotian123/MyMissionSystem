@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69bc10ea020d44118faa5d1957a2b66e, type: 3}
   m_Name: Main
   m_EditorClassIdentifier: 
-  _serializedGraph: '{"type":"YLT.MissionSystem.MissionChain","nodes":[{"_position":{"x":-144.6667,"y":239.452},"$type":"YLT.MissionSystem.NodeStart","$id":"0"},{"_requires":[{"eventType":"PlayerBehaviourExample","count":1,"_unfolded":true,"_node":{"$ref":"1"},"$type":"MyMissionRequireTemplate"}],"_UID":"08c5f955-0b89-427e-9461-9555b9eb1054","_position":{"x":-9.601017,"y":120.7115},"$type":"YLT.MissionSystem.NodeMission","$id":"1"},{"action":{"message":"b1","_node":{"$ref":"2"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":400.2042,"y":36.25779},"$type":"YLT.MissionSystem.NodeAction","$id":"2"},{"_subChain":{"_value":1},"_position":{"x":442.2242,"y":184.3044},"$type":"YLT.MissionSystem.SubMissionChain","$id":"3"},{"action":{"message":"Out1","_node":{"$ref":"4"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":766.8755,"y":214.4921},"$type":"YLT.MissionSystem.NodeAction","$id":"4"}],"connections":[{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"3"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"YLT.MissionSystem.ConnectionBase"}],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
-  _objectReferences:
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 44138cf0a5161d549970ef2b3e7c7f6c, type: 2}
+  _serializedGraph: '{"type":"YLT.MissionSystem.MissionChain","nodes":[{"_position":{"x":-144.6667,"y":239.452},"$type":"YLT.MissionSystem.NodeStart","$id":"0"},{"_requires":[{"eventType":"PlayerBehaviourExample","count":1,"_unfolded":true,"_node":{"$ref":"1"},"$type":"MyMissionRequireTemplate"}],"_UID":"08c5f955-0b89-427e-9461-9555b9eb1054","_position":{"x":-9.601017,"y":120.7115},"$type":"YLT.MissionSystem.NodeMission","$id":"1"},{"action":{"message":"b1","_node":{"$ref":"2"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":209.2179,"y":310.0259},"$type":"YLT.MissionSystem.NodeAction","$id":"2"}],"connections":[{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"YLT.MissionSystem.ConnectionBase"}],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
+  _objectReferences: []
   _graphSource:
     _version: 3.3
     _category: 
     _comments: 
-    _translation: {x: 247, y: 185}
-    _zoomFactor: 0.62939376
+    _translation: {x: 280, y: 247}
+    _zoomFactor: 0.5655214
   _haltSerialization: 0
   _externalSerializationFile: {fileID: 0}

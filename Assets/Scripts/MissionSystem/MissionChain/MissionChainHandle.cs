@@ -10,11 +10,10 @@ namespace YLT.MissionSystem
         private readonly MissionChain chain;
         private readonly Dictionary<string, NodeMission> activeNodes = new Dictionary<string, NodeMission>();
         private readonly Queue<NodeMission> buffer = new Queue<NodeMission>();
-
         //子任务链
         private readonly Dictionary<string,SubMissionChain> subMissionChains = new Dictionary<string, SubMissionChain>();
 
-        //该任务链是否有父对象
+        //该任务链父对象
         public MissionChainHandle parentHandle = null;
 
 
@@ -64,11 +63,11 @@ namespace YLT.MissionSystem
             }
         }
 
-        public void OnMissionChainComplete(string missionchainId)
+        public void OnMissionChainComplete(string missionchainId, System.Action<string> deployer)
         {
-            if (parentHandle == null) return;
+            deployer(missionchainId);
 
-            if (!parentHandle.subMissionChains.Remove(missionchainId, out var node)) return;
+            if (parentHandle == null||!parentHandle.subMissionChains.Remove(missionchainId, out var node)) return;
 
             foreach (var outConnection in node.outConnections.Where(c => ((ConnectionBase)c).IsAvailable && ((ConnectionBase)c).IsSequence))
             {
@@ -78,7 +77,7 @@ namespace YLT.MissionSystem
             // 检测在此任务链结束后母任务链是否也结束了（处理嵌套任务链的情况）
             if (parentHandle.IsCompleted)
             {
-                parentHandle.OnMissionChainComplete(parentHandle.chain.name);
+                parentHandle.OnMissionChainComplete(parentHandle.chain.name, deployer);
             }
         }
 
@@ -107,8 +106,8 @@ namespace YLT.MissionSystem
                     break;
 
                 case SubMissionChain chainNode:
-                    chainNode.StartSubMission(this);
-                    subMissionChains.Add(chainNode.subGraph.name,(SubMissionChain)node);
+                    if (chainNode.StartSubMission(this))
+                        subMissionChains.Add(chainNode.subGraph.name, (SubMissionChain)node);
                     break;
             }
 
