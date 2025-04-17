@@ -1,0 +1,42 @@
+{
+    "missionids": [
+        "Main.1a4073a1-2614-4215-a78e-b0c3ed516138",
+        "Main.cca3b803-3649-4507-8e75-b32c48e63f8a",
+        "MissionChain2.929acc45-fb7b-4cdd-afc9-8386d98b1da2",
+        "MissionChain3.8f82b94a-fd96-41b0-9f03-55521e1bd7d4"
+    ],
+    "missionChainManagerDatas": [
+        {
+            "missionChainHanleDatas": [
+                {
+                    "activeMissionDatas": [
+                        "Main.1a4073a1-2614-4215-a78e-b0c3ed516138",
+                        "Main.cca3b803-3649-4507-8e75-b32c48e63f8a"
+                    ],
+                    "activeSubMissionChainDatas": [
+                        "MissionChain2",
+                        "MissionChain3"
+                    ],
+                    "missionChainData": "Main",
+                    "parentHandleData": ""
+                },
+                {
+                    "activeMissionDatas": [
+                        "MissionChain2.929acc45-fb7b-4cdd-afc9-8386d98b1da2"
+                    ],
+                    "activeSubMissionChainDatas": [],
+                    "missionChainData": "MissionChain2",
+                    "parentHandleData": "Main"
+                },
+                {
+                    "activeMissionDatas": [
+                        "MissionChain3.8f82b94a-fd96-41b0-9f03-55521e1bd7d4"
+                    ],
+                    "activeSubMissionChainDatas": [],
+                    "missionChainData": "MissionChain3",
+                    "parentHandleData": "Main"
+                }
+            ]
+        }
+    ]
+}

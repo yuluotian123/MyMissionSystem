@@ -3,6 +3,7 @@ using UnityEngine;
 
 using ParadoxNotion;
 using NodeCanvas.Framework;
+using System.Collections.Generic;
 
 namespace YLT.MissionSystem
 {
@@ -28,7 +29,38 @@ namespace YLT.MissionSystem
         {
             if (primeNode == null)
                 primeNode = AddNode<NodeStart>();
+
             base.OnGraphObjectEnable();
+        }
+
+        public NodeMission FindNodeMissionByMissionID(string missionID)
+        {
+            var graphID = missionID.Split('.')[0];
+            if(graphID != name)
+                return null;
+
+            var nodeMissionList = GetAllNodesOfType<NodeMission>();
+
+            foreach ( var nodeMission in nodeMissionList)
+            {
+                if(nodeMission.MissionId == missionID) 
+                    return nodeMission;
+            }
+
+            return null;
+        }
+
+        public SubMissionChain FindSubMissionChainBySubGraphName(string subGraphName)
+        {
+            var SubNodeList = GetAllNodesOfType<SubMissionChain>();
+
+            foreach ( var subNode in SubNodeList)
+            {
+                if(subGraphName == subNode.subGraph.name)
+                    return subNode;
+            }
+
+            return null;
         }
     }
 }

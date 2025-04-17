@@ -10,7 +10,7 @@ using UnityEditor;
 
 namespace YLT.MissionSystem
 {
-    [ParadoxNotion.Design.Icon("Eye"), Color("b1d480"), Name("Mission")]
+    [ParadoxNotion.Design.Icon("Eye"), Color("b1d480"),Name("Mission")]
     [Description("setup a new mission")]
     public class NodeMission : NodeBase
     {
@@ -32,7 +32,13 @@ namespace YLT.MissionSystem
             }
         }
 
-        public string MissionId => $"{graph.name}.{base.UID}";
+        public string MissionId
+        {
+            get
+            {
+                 return $"{graph.name}.{base.UID}";
+            }
+        }
 
 #if UNITY_EDITOR
 

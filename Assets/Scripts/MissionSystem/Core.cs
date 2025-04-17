@@ -20,7 +20,6 @@ namespace YLT.MissionSystem
         /// </summary>
         /// <param name="id"></param>
         /// <param name="requires"></param>
-        /// <param name="rewards"></param>
         /// <param name="requireMode"></param>
         /// <param name="property"></param>
         /// <exception cref="Exception"></exception>
@@ -53,8 +52,6 @@ namespace YLT.MissionSystem
     /// <summary>任务附加属性描述</summary>
     public abstract class MissionProperty
     { 
-        public bool isDecorator = false;
-        public bool isImplicit = false;
     }
     
     /// <summary>决定玩家具体要执行的行为</summary>
@@ -194,8 +191,10 @@ namespace YLT.MissionSystem
     /// <typeparam name="T">消息类型</typeparam>
     public class MissionManager<T>
     {
-        private readonly Dictionary<string, Mission<T>> allMissions = new Dictionary<string, Mission<T>>();
-        private readonly List<IMissionSystemComponent<T>> components = new List<IMissionSystemComponent<T>>();
+        //会储存所有正在进行中的任务
+        public readonly Dictionary<string, Mission<T>> allMissions = new Dictionary<string, Mission<T>>();
+        //此列表会储存所有任务父图（没有任何父任务链的任务图）
+        public readonly List<IMissionSystemComponent<T>> components = new List<IMissionSystemComponent<T>>();
 
         /// <summary>启动目标任务</summary>
         /// <param name="proto"></param>

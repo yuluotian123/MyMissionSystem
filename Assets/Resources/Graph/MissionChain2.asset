@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bc10ea020d44118faa5d1957a2b66e, type: 3}
+  m_Name: MissionChain2
+  m_EditorClassIdentifier: 
+  _serializedGraph: '{"type":"YLT.MissionSystem.MissionChain","nodes":[{"_position":{"x":-74.58555,"y":19.51778},"$type":"YLT.MissionSystem.NodeStart","$id":"0"},{"action":{"message":"InTree","_node":{"$ref":"1"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":130.09,"y":-197.9052},"$type":"YLT.MissionSystem.NodeAction","$id":"1"},{"_requires":[{"eventType":"B","count":1,"useMessage":true,"_conditions":[],"_unfolded":true,"_node":{"$ref":"2"},"$type":"MissionRequireWithConditionTemplate"}],"_UID":"96ffee04-1d1b-43c5-8aae-a399aaec936e","_position":{"x":149.6817,"y":-40.13207},"$type":"YLT.MissionSystem.NodeMission","$id":"2"},{"action":{"message":"b2_1","_node":{"$ref":"3"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":611.7515,"y":-76.25927},"$type":"YLT.MissionSystem.NodeAction","$id":"3"},{"_requires":[{"eventType":"B","count":1,"useMessage":true,"_conditions":[],"_unfolded":true,"_node":{"$ref":"4"},"$type":"MissionRequireWithConditionTemplate"}],"_UID":"929acc45-fb7b-4cdd-afc9-8386d98b1da2","_position":{"x":486.2869,"y":121.8204},"$type":"YLT.MissionSystem.NodeMission","$id":"4"},{"action":{"message":"b2_2","_node":{"$ref":"5"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":745.9512,"y":41.73143},"$type":"YLT.MissionSystem.NodeAction","$id":"5"}],"connections":[{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"2"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"4"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"YLT.MissionSystem.ConnectionBase"}],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
+  _objectReferences: []
+  _graphSource:
+    _version: 3.3
+    _category: 
+    _comments: 
+    _translation: {x: 386, y: 255}
+    _zoomFactor: 0.70290565
+  _haltSerialization: 0
+  _externalSerializationFile: {fileID: 0}

@@ -1,10 +1,11 @@
 ﻿/// <summary>游戏事件类型枚举</summary>
 public enum GameEventType
 {
-    PlayerBehaviourExample,
-    PlantCrop,
-    EnterRoom,
-    CompleteDialogue,
+    A,
+    B,
+    C,
+    D,
+    E
     // more behaviors...
 }
 

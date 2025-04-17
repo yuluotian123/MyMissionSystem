@@ -21,7 +21,12 @@ namespace YLT.MissionSystem
         [SerializeField, ExposeField]
         private BBParameter<MissionChain> _subChain = null;
         public override MissionChain subGraph { get { return _subChain.value; } set { _subChain.value = value; } }
+
+        //注意，这块用不了nodecanvas自带的parameter的功能
         public override BBParameter subGraphParameter => _subChain;
+
+        //人为规定：子图后不会再连接其他内容（既不方便阅读又不方便使用）
+        //public override int maxOutConnections => 0;
 
 
         /// <summary>
@@ -33,13 +38,10 @@ namespace YLT.MissionSystem
                 return false;
 
             if(subGraph.GetAllNodesOfType<NodeMission>().Count() == 0 && subGraph.GetAllNodesOfType<SubMissionChain>().Count() == 0)
-            {
-                Debug.LogError(subGraph.name + "子图节点内部没有任务节点或子图节点");
-                return false;
-            }
-                
+                throw new Exception(subGraph.name + "子图节点内部没有任务节点或子图节点");
 
-            var subHandle = GameAPI.MissionChainManager.StartChain(subGraph);
+            //启动子任务链并进行初始化(后续如果要同时使用多个chainManager的话此处需要拓展)
+            var subHandle = ((MissionChainManager)GameManager.instance.MissionManager.components[0]).StartChain(subGraph);
             subHandle.parentHandle = parent;
 
             return true;

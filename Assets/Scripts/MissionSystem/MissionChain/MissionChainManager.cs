@@ -4,12 +4,13 @@ using UnityEngine;
 namespace YLT.MissionSystem
 {
     /// <summary>
-    /// 任务链管理器是一种组件，会监听任务的开始和结束
+    /// 任务链管理器是一种组件，会监听任务的开始和结束并管理所有任务链（图）
     /// </summary>
     public class MissionChainManager : IMissionSystemComponent<object>
     {
         private readonly MissionManager<object> missionManager;
-        private readonly Dictionary<string, MissionChainHandle> handles = new Dictionary<string, MissionChainHandle>();
+        //图id，handle
+        public Dictionary<string, MissionChainHandle> handles = new Dictionary<string, MissionChainHandle>();
 
         public MissionChainManager(MissionManager<object> missionManager)
         {
@@ -24,6 +25,21 @@ namespace YLT.MissionSystem
                 return existHandle;
 
             var handle = new MissionChainHandle(chain);
+            handle.FlushBuffer(t => missionManager.StartMission(t));
+            if (!handle.IsCompleted)
+                handles.Add(chain.name, handle);
+
+            return handle;
+        }
+
+        public MissionChainHandle StartChain_fromData(MissionChain chain,List<NodeMission> nodeMissions,List<SubMissionChain> subMissionChain)
+        {
+            if (chain == null) return null;
+
+            if (handles.TryGetValue(chain.name, out var existHandle))
+                return existHandle;
+
+            var handle = new MissionChainHandle(chain, nodeMissions, subMissionChain,true);
             handle.FlushBuffer(t => missionManager.StartMission(t));
             if (!handle.IsCompleted)
                 handles.Add(chain.name, handle);
@@ -46,7 +62,7 @@ namespace YLT.MissionSystem
             // Remove the handle if the mission is finished
             if (handle.IsCompleted)
             {
-                handle.OnMissionChainComplete(missionChainId, t =>
+                handle.OnMissionChainComplete(missionChainId, missionManager, t =>
                 {
                     Debug.Log("IsComplete" + t + " HandleCount:" + handles.Count);
                     handles.Remove(t);
