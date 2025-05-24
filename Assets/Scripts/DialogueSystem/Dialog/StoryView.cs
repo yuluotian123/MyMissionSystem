@@ -7,12 +7,10 @@ using System.Collections.Generic;
 using NodeCanvas.DialogueTrees;
 using Unity.VisualScripting;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 public class StoryView : BaseView, IPointerClickHandler
 {
-    [SerializeField]private Button _nextDialogButton;
-    [SerializeField]private VerticalLayoutGroup _verticalLayoutGroup;
-
     private Dictionary<SubtitlesRequestInfo, DialogView> _dialogViews;
     private List<DialogView> _activeViews;
 
@@ -23,24 +21,33 @@ public class StoryView : BaseView, IPointerClickHandler
         _dialogViews = new Dictionary<SubtitlesRequestInfo, DialogView>();
     }
 
-    private bool CheckDialogUIBornerOut(DialogView view)
+    private bool CheckAndSetUIRectTransform(DialogView view,DialogData data,SubtitlesRequestInfo info)
     {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(this._rectTransform);
-        Canvas.ForceUpdateCanvases();
+        var anchorPos = new Vector2(0, 0);
+        if(_activeViews.Count == 0)
+            anchorPos = new Vector2(data.ScreenPadding.x, -data.ScreenPadding.z);
+        else
+        {
+            var leftBottomPos = _activeViews[_activeViews.Count - 1].GetLeftBottomPos();
+            anchorPos = new Vector2(data.ScreenPadding.x ,- leftBottomPos.y - data.ScreenSpacing);
+        }
 
-        // 获取UI预制体的RectTransform
-        RectTransform _rect = view.GetComponent<RectTransform>();
-        Debug.Log(_rect.anchoredPosition);
+        var textSize = view.SetDialogRect(data._contentSpacing,data.ScreenPadding.x,data.ScreenPadding.y, info.statement.text);
+        view.GetComponent<RectTransform>().anchoredPosition = anchorPos;
 
-        if (_rect.anchoredPosition.y <= (-Screen.height + _verticalLayoutGroup.padding.bottom))
+        if ((anchorPos.y - textSize.y) <= (-Screen.height + data.ScreenPadding.z))
+        {
+            anchorPos = new Vector2(data.ScreenPadding.x, -data.ScreenPadding.z);
+            view.GetComponent<RectTransform>().anchoredPosition = anchorPos;
             return true;
+        }
 
         return false;
     }
 
     public void ShowDialogue(SubtitlesRequestInfo info,DialogData data)
     {
-        StartCoroutine(Internal_ShowDialog(info,data));
+        StartCoroutine(Internal_ShowDialog(info, data));
     }
 
     IEnumerator Internal_ShowDialog(SubtitlesRequestInfo info,DialogData data)
@@ -48,7 +55,7 @@ public class StoryView : BaseView, IPointerClickHandler
         var dialogView = DialogueManager.instance.GetOrCreateDialogueUIView(this.transform);
 
         //识别字符功能，看是做在这里还是写在表里
-        if (CheckDialogUIBornerOut(dialogView)/*||data.content.Substring(data.content.Length - 2) == "\\F"*/)
+        if (CheckAndSetUIRectTransform(dialogView,data,info))
         {
             var pool = DialogueManager.instance.GetDialogueUIPool();
             foreach(var view in _activeViews)

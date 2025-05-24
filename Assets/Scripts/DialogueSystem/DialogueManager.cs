@@ -8,11 +8,16 @@ using UnityEngine;
 [Serializable]
 public class DialogData 
 {
-    [Header("Layout设定")]
+    [Header("Layout璁剧疆")]
     [SerializeField]
     public float _contentSpacing = 1f;
+    [SerializeField]
+    public Vector4 ScreenPadding = new Vector4(100f,100f,150f,200f);
+    [SerializeField]
+    public float ScreenSpacing = 60f;
 
-    [Header("延迟设定")]
+
+    [Header("寤惰繜璁剧疆")]
     [SerializeField]
     public bool isAuto = false;
     [SerializeField]
@@ -23,6 +28,20 @@ public class DialogData
     public float finalDelay = 0.5f;
     [SerializeField]
     public float flipDelay = 1.0f;
+
+    public DialogData(float contentSpacing = 1f, Vector4 screenPadding = default, float screenSpacing = 60f, 
+                     bool autoPlay = false, bool instant = false, float typeDelay = 0.05f, 
+                     float endDelay = 0.5f, float flipTime = 1.0f)
+    {
+        _contentSpacing = contentSpacing;
+        ScreenPadding = screenPadding == default ? new Vector4(100f, 100f, 150f, 200f) : screenPadding;
+        ScreenSpacing = screenSpacing;
+        isAuto = autoPlay;
+        isInstant = instant; 
+        typingDelay = typeDelay;
+        finalDelay = endDelay;
+        flipDelay = flipTime;
+    }
 }
 
 
@@ -70,7 +89,6 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     void OnDialogueStarted(DialogueTree dlg)
     {
         //nothing special...
-        Debug.Log("对话树启动");
     }
 
     void OnDialoguePaused(DialogueTree dlg)
@@ -83,7 +101,6 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     }
     void OnSubtitlesRequest(SubtitlesRequestInfo info)
     {
-        Debug.Log("对话树进入台词");   
         if(storyPresenter != null)
         {
             storyPresenter.ShowDialog(info, dialogSettings);
@@ -95,7 +112,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     }
 
 
-    private readonly string prefabPath = "Dialogue/DialogueText";
+    private readonly string prefabPath = "Dialogue/DialogueView";
     public DialogView GetOrCreateDialogueUIView(Transform parent)
     {
         var prefab = UIManager.instance.LoadUIPrefab(prefabPath);
