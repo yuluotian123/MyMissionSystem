@@ -3,7 +3,6 @@ using YLT.MissionSystem;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    [SerializeField] private MissionChain chain;
     public MissionManager<object> MissionManager;
 
     protected override void OnInit()

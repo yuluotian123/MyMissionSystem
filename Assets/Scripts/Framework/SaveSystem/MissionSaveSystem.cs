@@ -1,9 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 using YLT.MissionSystem;
 
+/// <summary>
+/// 对应数据：
+///1.启用任务，任务进行情况（MissionManager:Mission）:S_MissionManagerData
+///2.任务流程情况（MissionChainManager：MissionChainHandle的List）:S_MissionChainManagerData
+///3.任务链内部数据进行情况（MissionChainHandle对应的MissionChain，父任务链，进行中的任务节点，进行中的子任务链节点）:S_ChainHandleData
+/// </summary>
 [Serializable]
 public class S_MissionManagerData
 {
@@ -46,10 +53,18 @@ public class S_ChainHandleData
 }
 
 
-
+/// <summary>
+/// 序列化系统（静态类）
+/// 包含一系列序列化函数
+/// </summary>
 public static partial class SerializedSystem
 {
     private static readonly string GraphPath = "Graph/";
+    private static readonly string JsonPath = Application.streamingAssetsPath + "/JsonTest.json";
+
+    /// <summary>
+    /// 序列化任务系统（保存时启用）
+    /// </summary>
     public static void SerializeMissionSystem()
     {
         var missionManager = GameManager.instance.MissionManager;
@@ -100,6 +115,33 @@ public static partial class SerializedSystem
 
         SaveJson(missionManagerData,JsonPath);
     }
+    private static void SaveJson(S_MissionManagerData data, string jsonPath)
+    {
+        StreamWriter writer;
+        //如果本地没有对应的json 文件，重新创建
+        if (!File.Exists(jsonPath))
+        {
+            writer = File.CreateText(jsonPath);
+        }
+        else
+        {
+            File.Delete(JsonPath);
+            writer = File.CreateText(jsonPath);
+        }
+
+        string json = JsonUtility.ToJson(data, true);
+        writer.Flush();
+        writer.Dispose();
+        writer.Close();
+
+        File.WriteAllText(jsonPath, json);
+    }
+
+    /// <summary>
+    /// 反序列化任务系统，读取存档
+    /// </summary>
+    /// <param name="mainGraphPath"></param>
+    /// <returns></returns>
     public static MissionManager<object> NonSerializeMissionSystem(string mainGraphPath)
     {
         var missionManager = new MissionManager<object>();
@@ -166,30 +208,6 @@ public static partial class SerializedSystem
         }
 
         return missionManager;
-    }
-
-
-    private static readonly string JsonPath = Application.streamingAssetsPath + "/JsonTest.json";
-    private static void SaveJson(S_MissionManagerData data,string jsonPath)
-    {
-        StreamWriter writer;
-        //如果本地没有对应的json 文件，重新创建
-        if (!File.Exists(jsonPath))
-        {
-            writer = File.CreateText(jsonPath);
-        }
-        else
-        {
-            File.Delete(JsonPath);
-            writer = File.CreateText(jsonPath);
-        }
-
-        string json = JsonUtility.ToJson(data, true);
-        writer.Flush();
-        writer.Dispose();
-        writer.Close();
-
-        File.WriteAllText(jsonPath, json);
     }
     private static string ReadJson(string jsonPath)
     {
