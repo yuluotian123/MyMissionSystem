@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using NodeCanvas.Tasks.Actions;
+using System;
+using UnityEngine;
 using YLT.MissionSystem;
 
 public class GameManager : MonoSingleton<GameManager>
@@ -8,12 +10,19 @@ public class GameManager : MonoSingleton<GameManager>
     protected override void OnInit()
     {
         StartMissionSystem();
+        StartDialogueSystem();
+    }
+
+    private void StartDialogueSystem()
+    {
+        Debug.Log("InitDialogueSystem");
+        DialogueManager.instance.StartDialogueTree();
     }
 
     private void StartMissionSystem()
     {
         Debug.Log("Start Chain");
-        this.MissionManager = SerializedSystem.NonSerializeMissionSystem("Graph/Main");
+        this.MissionManager = SerializedSystem.DeSerializeMissionSystem(SerializedSystem.JsonPathTest);
     }
 
     void Update()

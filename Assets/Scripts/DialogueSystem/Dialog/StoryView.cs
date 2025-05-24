@@ -1,38 +1,36 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using Framework.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using NodeCanvas.DialogueTrees;
-using Unity.VisualScripting;
-using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 public class StoryView : BaseView, IPointerClickHandler
 {
-    private Dictionary<SubtitlesRequestInfo, DialogView> _dialogViews;
     private List<DialogView> _activeViews;
 
     protected override void Awake()
     {
         base.Awake();
         _activeViews = new List<DialogView>();
-        _dialogViews = new Dictionary<SubtitlesRequestInfo, DialogView>();
     }
 
-    private bool CheckAndSetUIRectTransform(DialogView view,DialogData data,SubtitlesRequestInfo info)
+    public override void Close()
     {
-        var anchorPos = new Vector2(0, 0);
-        if(_activeViews.Count == 0)
-            anchorPos = new Vector2(data.ScreenPadding.x, -data.ScreenPadding.z);
-        else
+        DialogueManager.instance.GetDialogueUIPool().Clear();
+        base.Close();
+    }
+
+    private bool CheckAndSetUIRectTransform(DialogView view,DialogConfig data,string contentText)
+    {
+        var anchorPos = new Vector2(data.ScreenPadding.x, -data.ScreenPadding.z);
+        if (_activeViews.Count > 0)
         {
             var leftBottomPos = _activeViews[_activeViews.Count - 1].GetLeftBottomPos();
             anchorPos = new Vector2(data.ScreenPadding.x ,- leftBottomPos.y - data.ScreenSpacing);
         }
 
-        var textSize = view.SetDialogRect(data._contentSpacing,data.ScreenPadding.x,data.ScreenPadding.y, info.statement.text);
+        var textSize = view.SetDialogRect(data._contentSpacing,data.ScreenPadding.x,data.ScreenPadding.y, contentText);
         view.GetComponent<RectTransform>().anchoredPosition = anchorPos;
 
         if ((anchorPos.y - textSize.y) <= (-Screen.height + data.ScreenPadding.z))
@@ -45,38 +43,58 @@ public class StoryView : BaseView, IPointerClickHandler
         return false;
     }
 
-    public void ShowDialogue(SubtitlesRequestInfo info,DialogData data)
+    /// <summary>
+    /// 返回是否翻页
+    /// </summary>
+    /// <param name="info"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public bool ShowDialogue(SubtitlesRequestInfo info,DialogConfig data)
     {
-        StartCoroutine(Internal_ShowDialog(info, data));
-    }
-
-    IEnumerator Internal_ShowDialog(SubtitlesRequestInfo info,DialogData data)
-    {
-        var dialogView = DialogueManager.instance.GetOrCreateDialogueUIView(this.transform);
-
-        //识别字符功能，看是做在这里还是写在表里
-        if (CheckAndSetUIRectTransform(dialogView,data,info))
+        //读取名字信息
+        var hasName = false;
+        var nameContent = "";
+        if (info.actor != null)
         {
-            var pool = DialogueManager.instance.GetDialogueUIPool();
-            foreach(var view in _activeViews)
-            {
-                pool.Despawn(view);
-            }
-            _activeViews.Clear();
-            
-            yield return new WaitForSeconds(data.flipDelay);
+            var actor = info.actor;
+            nameContent = string.Format("<size={0}><color=#{1}>{2}</color></size>\n", 55, UnityEngine.ColorUtility.ToHtmlStringRGBA(actor.dialogueColor), actor.name);
+            hasName = true;
         }
 
-        _activeViews.Add(dialogView);
-        _dialogViews.Add(info, dialogView);
+        var dialogView = DialogueManager.instance.GetOrCreateDialogueUIView(this.transform);
+        var isFlip = false;
 
-        dialogView.ShowDialog(info, data._contentSpacing, data.typingDelay, data.isInstant);
+        //设置当前dialogView的大小和位置，如果满一页则翻页
+        if (CheckAndSetUIRectTransform(dialogView, data, nameContent + info.statement.text))
+        {
+            var pool = DialogueManager.instance.GetDialogueUIPool();
+
+            foreach (var view in _activeViews)
+                pool.Despawn(view);
+
+            _activeViews.Clear();
+            isFlip = true;
+        }
+        _activeViews.Add(dialogView);
+
+        StartCoroutine(Internal_ShowDialog(dialogView,info, info.statement.text,nameContent,data.typingDelay,data.finalDelay,data.flipDelay,hasName,data.isInstant,data.isAuto,isFlip));
+
+        return isFlip;
+    }
+    IEnumerator Internal_ShowDialog(DialogView dialogView,SubtitlesRequestInfo info, string statement,string nameContent,float typingDelay,float finalDelay,float flipDelay,bool hasName,bool isInstant,bool isAuto,bool isFlip)
+    {
+
+        if(isFlip)
+            yield return new WaitForSeconds(flipDelay);
+
+        //显示dialog对应页面
+        dialogView.ShowDialog(statement, typingDelay, isInstant,nameContent,hasName);
 
         while (dialogView.IsTyping)
         {
             yield return null;
 
-            if(!data.isAuto && anyKeyDown)
+            if(!isAuto && anyKeyDown)
             {
                 dialogView.FinishTyping();
                 break;
@@ -85,8 +103,8 @@ public class StoryView : BaseView, IPointerClickHandler
 
         yield return null;
 
-        if(data.isAuto)
-            yield return new WaitForSeconds(data.finalDelay);
+        if(isAuto)
+            yield return new WaitForSeconds(finalDelay);
         else
         {
             while (!anyKeyDown)
@@ -99,6 +117,8 @@ public class StoryView : BaseView, IPointerClickHandler
 
         info.Continue();
     }
+
+
     private bool anyKeyDown;
     public void OnPointerClick(PointerEventData eventData) => anyKeyDown = true;
     private void LateUpdate() => anyKeyDown = false;

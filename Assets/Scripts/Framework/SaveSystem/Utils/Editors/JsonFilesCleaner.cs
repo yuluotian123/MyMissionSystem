@@ -4,7 +4,7 @@ using System.IO;
 
 public class JsonFilesCleaner : EditorWindow
 {
-    private string jsonPath = "Assets/JsonPath"; // 默认JSON文件路径
+    private string jsonPath = Application.streamingAssetsPath; // 默认JSON文件路径
     private bool includeSubfolders = true; // 是否包含子文件夹
     private Vector2 scrollPosition;
     private string[] foundFiles = new string[0];

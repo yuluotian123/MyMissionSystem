@@ -10,6 +10,10 @@ public static class GameAPI
     public static void StartMission(MissionPrototype<object> missionProto) =>
         GameManager.instance.MissionManager.StartMission(missionProto);
 
-    public static void Save() => SerializedSystem.SerializeMissionSystem();
+    public static void Save()
+    {
+        SerializedSystem.SerializeMissionSystem(SerializedSystem.JsonPathTest);
+        SerializedSystem.SerializeDialogueTree(SerializedSystem.JsonPathTest2);
+    }
 }
 

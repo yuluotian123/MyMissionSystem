@@ -4,6 +4,47 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+
+
+public partial class SerializedSystem
+{
+    public static readonly string GraphPath = "Graph/";
+    public static readonly string JsonPathTest = Application.streamingAssetsPath + "/JsonTest.json";
+    public static readonly string JsonPathTest2 = Application.streamingAssetsPath + "/JsonTest2.json";
+
+    private static void SaveJson<T>(T data, string jsonPath)
+    {
+        StreamWriter writer;
+        //如果本地没有对应的json 文件，重新创建
+        if (!File.Exists(jsonPath))
+        {
+            writer = File.CreateText(jsonPath);
+        }
+        else
+        {
+            File.Delete(jsonPath);
+            writer = File.CreateText(jsonPath);
+        }
+
+        string json = JsonUtility.ToJson(data, true);
+        writer.Flush();
+        writer.Dispose();
+        writer.Close();
+
+        File.WriteAllText(jsonPath, json);
+    }
+
+    private static string ReadJson(string jsonPath)
+    {
+        if (!File.Exists(jsonPath))
+        {
+            return null;
+        }
+
+        return File.ReadAllText(jsonPath);
+    }
+}
 
 // List<T>
 [Serializable]
@@ -52,3 +93,4 @@ public class Serialization<TKey, TValue> : ISerializationCallbackReceiver
         }
     }
 }
+

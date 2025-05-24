@@ -30,10 +30,5 @@ namespace Framework.UI
             Hide();
             Destroy(gameObject);
         }
-
-        public GameObject GetGameObject()
-        {
-            return _gameObject;
-        }
     }
 } 

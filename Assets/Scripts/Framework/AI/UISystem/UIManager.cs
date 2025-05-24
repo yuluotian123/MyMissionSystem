@@ -33,7 +33,7 @@ namespace Framework.UI
             {
                 // 使用对象池
                 var poolableView = GetOrCreateUIPoolView(prefabPath, prefab, parent);
-                instance = poolableView.GetGameObject();
+                instance = poolableView.gameObject;
                 view = poolableView;
             }
             else

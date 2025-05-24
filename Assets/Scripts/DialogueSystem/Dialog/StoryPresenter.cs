@@ -18,9 +18,9 @@ public class StoryPresenter : BasePresenter<StoryView>
         base.Initialize();
     }
 
-    public void ShowDialog(SubtitlesRequestInfo info,DialogData data)
+    public bool ShowDialog(SubtitlesRequestInfo info,DialogConfig data)
     {
-        View.ShowDialogue(info,data);
+        return View.ShowDialogue(info,data);
     }
 
     public override void Close()

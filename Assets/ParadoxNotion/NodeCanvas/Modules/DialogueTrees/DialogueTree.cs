@@ -211,9 +211,16 @@ namespace NodeCanvas.DialogueTrees
         public void EnterNode(DTNode node) {
             currentNode = node;
             currentNode.Reset(false);
+
             if ( currentNode.Execute(agent, blackboard) == Status.Error ) {
                 Stop(false);
             }
+        }
+
+        public void SetCurrentNode(DTNode node)
+        {
+            currentNode = node;
+            currentNode.Reset(false);
         }
 
         ///<summary>Raise the OnSubtitlesRequest event</summary>
@@ -233,7 +240,6 @@ namespace NodeCanvas.DialogueTrees
         protected override void OnGraphStarted() {
             previousDialogue = currentDialogue;
             currentDialogue = this;
-
             Logger.Log(string.Format("Dialogue Started '{0}'", this.name), "Dialogue Tree", this);
             if ( OnDialogueStarted != null ) {
                 OnDialogueStarted(this);

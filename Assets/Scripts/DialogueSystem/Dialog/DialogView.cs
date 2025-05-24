@@ -28,7 +28,6 @@ public class DialogView : PoolableUIView
         rect.sizeDelta = new Vector2(Screen.width - (screenPaddingLeft + screenPaddingLeft), 0);
         var textSize = CalculateTextSize(text);
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, textSize.y);
-        Debug.Log(rect.sizeDelta);
 
         return rect.sizeDelta;
     }
@@ -42,7 +41,7 @@ public class DialogView : PoolableUIView
         if (_contentText == null) return Vector2.zero;
 
         // 保存当前文本和设置
-        string originalText = _contentText.text;
+        string originalText = "";
         bool originalEnabled = _contentText.enabled;
         
         try
@@ -137,11 +136,11 @@ public class DialogView : PoolableUIView
         return leftTopPos;
     }
 
-    public void ShowDialog(SubtitlesRequestInfo info,float contentSpacing, float speed, bool instant = false)
+    public void ShowDialog(string commentContent, float speed, bool instant = false,string nameContent = "",bool hasCharacterName = false)
     {
         StopAllCoroutines();
 
-        content = info.statement.text;
+        content = nameContent + commentContent;
 
         if (instant)
         {
@@ -150,13 +149,20 @@ public class DialogView : PoolableUIView
         }
         else
         {
-            StartCoroutine(TypeText(content, speed));
+            StartCoroutine(TypeText(commentContent, speed,nameContent,hasCharacterName));
         }
     }
-    private IEnumerator TypeText(string content,float speed )
+    private IEnumerator TypeText(string content,float speed, string nameContent = "",bool hasCharacterName = false)
     {
         _isTyping = true;
         _contentText.text = "";
+
+        if (hasCharacterName)
+        {
+            _contentText.text = nameContent;
+        }
+
+        yield return new WaitForSeconds(speed);
 
         foreach (char c in content)
         {

@@ -7,6 +7,5 @@ namespace Framework.UI
         void Show();
         void Hide();
         void Close();
-        GameObject GetGameObject();
     }
 } 

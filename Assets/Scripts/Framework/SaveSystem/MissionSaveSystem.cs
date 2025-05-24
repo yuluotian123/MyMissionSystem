@@ -59,15 +59,15 @@ public class S_ChainHandleData
 /// </summary>
 public static partial class SerializedSystem
 {
-    private static readonly string GraphPath = "Graph/";
-    private static readonly string JsonPath = Application.streamingAssetsPath + "/JsonTest.json";
 
     /// <summary>
     /// 序列化任务系统（保存时启用）
     /// </summary>
-    public static void SerializeMissionSystem()
+    public static void SerializeMissionSystem(string jsonPath)
     {
         var missionManager = GameManager.instance.MissionManager;
+        if (missionManager == null)
+            return;
 
         var missionManagerData = new S_MissionManagerData();
 
@@ -113,28 +113,7 @@ public static partial class SerializedSystem
             missionManagerData.missionChainManagerDatas.Add(missionChainManagerData);
         }
 
-        SaveJson(missionManagerData,JsonPath);
-    }
-    private static void SaveJson(S_MissionManagerData data, string jsonPath)
-    {
-        StreamWriter writer;
-        //如果本地没有对应的json 文件，重新创建
-        if (!File.Exists(jsonPath))
-        {
-            writer = File.CreateText(jsonPath);
-        }
-        else
-        {
-            File.Delete(JsonPath);
-            writer = File.CreateText(jsonPath);
-        }
-
-        string json = JsonUtility.ToJson(data, true);
-        writer.Flush();
-        writer.Dispose();
-        writer.Close();
-
-        File.WriteAllText(jsonPath, json);
+        SaveJson(missionManagerData,jsonPath);
     }
 
     /// <summary>
@@ -142,10 +121,10 @@ public static partial class SerializedSystem
     /// </summary>
     /// <param name="mainGraphPath"></param>
     /// <returns></returns>
-    public static MissionManager<object> NonSerializeMissionSystem(string mainGraphPath)
+    public static MissionManager<object> DeSerializeMissionSystem(string jsonPath,string mainGraphPath = "Graph/Main")
     {
         var missionManager = new MissionManager<object>();
-        string json = ReadJson(JsonPath);
+        string json = ReadJson(jsonPath);
         if (json == null || json == "")
         {
             missionManager = new MissionManager<object>();
@@ -208,14 +187,5 @@ public static partial class SerializedSystem
         }
 
         return missionManager;
-    }
-    private static string ReadJson(string jsonPath)
-    {
-        if (!File.Exists(JsonPath))
-        {
-            return null;
-        }
-
-        return File.ReadAllText(jsonPath);
     }
 }

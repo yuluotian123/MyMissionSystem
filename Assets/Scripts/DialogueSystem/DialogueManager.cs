@@ -6,8 +6,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class DialogData 
+public class DialogConfig 
 {
+    [Header("对话内容设置")]
+    [SerializeField]
+    public float headerSize = 55f;
+
     [Header("Layout设置")]
     [SerializeField]
     public float _contentSpacing = 1f;
@@ -29,7 +33,7 @@ public class DialogData
     [SerializeField]
     public float flipDelay = 1.0f;
 
-    public DialogData(float contentSpacing = 1f, Vector4 screenPadding = default, float screenSpacing = 60f, 
+    public DialogConfig(float contentSpacing = 1f, Vector4 screenPadding = default, float screenSpacing = 60f, 
                      bool autoPlay = false, bool instant = false, float typeDelay = 0.05f, 
                      float endDelay = 0.5f, float flipTime = 1.0f)
     {
@@ -42,6 +46,18 @@ public class DialogData
         finalDelay = endDelay;
         flipDelay = flipTime;
     }
+
+    public DialogConfig(DialogConfig dialogConfig)
+    {
+        _contentSpacing= dialogConfig._contentSpacing;
+        ScreenPadding = new Vector4(dialogConfig.ScreenPadding.x, dialogConfig.ScreenPadding.y, dialogConfig.ScreenPadding.z, dialogConfig.ScreenPadding.w);
+        ScreenSpacing = dialogConfig.ScreenSpacing;
+        isAuto = dialogConfig.isAuto;
+        isInstant = dialogConfig.isInstant;
+        typingDelay = dialogConfig.typingDelay;
+        finalDelay = dialogConfig.finalDelay;
+        flipDelay = dialogConfig.flipDelay;
+    }
 }
 
 
@@ -49,16 +65,20 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 {
     [SerializeField]
     private DialogueTreeController dialogue;
+    public DialogueTreeController dialogueTreeController => dialogue;
     [SerializeField]
     private RectTransform uiRoot;
     [SerializeField]
-    private DialogData dialogSettings;
+    private DialogConfig dialogSettings;
 
+    private DialogueTree dialogueTree => DialogueTree.currentDialogue;
+    public List<int> currentNodesList = new List<int>();
     private StoryPresenter storyPresenter = null;
+    private bool skip = false;
 
     void Awake() 
     { 
-        Subscribe(); 
+        Subscribe();
     }
     void OnDestroy() 
     { 
@@ -90,27 +110,49 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     {
         //nothing special...
     }
-
     void OnDialoguePaused(DialogueTree dlg)
     {
         
     }
     void OnDialogueFinished(DialogueTree dlg)
     {
-        
+        UIManager.instance.CloseUI<StoryPresenter>();
     }
     void OnSubtitlesRequest(SubtitlesRequestInfo info)
     {
         if(storyPresenter != null)
         {
-            storyPresenter.ShowDialog(info, dialogSettings);
+            if (skip)
+            {
+                var skipSettings = new DialogConfig(dialogSettings);
+                skipSettings.isAuto = true;
+                skipSettings.isInstant = true;
+                skipSettings.finalDelay = 0f;
+                skipSettings.typingDelay = 0f;
+                if (currentNodesList[currentNodesList.Count - 1] == dialogueTree.currentNode.ID)
+                {
+                    skip = false;
+                    skipSettings.isAuto = false;
+                    skipSettings.finalDelay = dialogSettings.finalDelay;
+                    skipSettings.typingDelay = dialogSettings.typingDelay;
+
+                }
+
+                storyPresenter.ShowDialog(info, skipSettings);
+            }
+            else
+            {
+                if (storyPresenter.ShowDialog(info, dialogSettings))
+                    currentNodesList.Clear();
+
+                currentNodesList.Add(dialogueTree.currentNode.ID);
+            }
         }
     }
     private void OnMultipleChoiceRequest(MultipleChoiceRequestInfo info)
     {
 
     }
-
 
     private readonly string prefabPath = "Dialogue/DialogueView";
     public DialogView GetOrCreateDialogueUIView(Transform parent)
@@ -123,14 +165,16 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         return UIManager.instance.GetUIPool(prefabPath);
     }
 
-
-    // Update is called once per frame
-    void Update()
+    public void StartDialogueTree()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            dialogue.StartDialogue();
-            storyPresenter = UIManager.instance.ShowUI<StoryPresenter>("Dialogue/Story", uiRoot, false);
-        }
+        Debug.Log("Start DialogueTree: " + SerializedSystem.DeserializeDialogueTree(SerializedSystem.JsonPathTest2));
+        storyPresenter = UIManager.instance.ShowUI<StoryPresenter>("Dialogue/Story", uiRoot, false);
+    }
+    public void MoveToCurrentStep(List<int> NodesInPage,bool fromBegin = false)
+    {
+        skip = true;
+
+        currentNodesList = NodesInPage;
+
     }
 }
