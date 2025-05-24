@@ -57,19 +57,19 @@ public class StoryView : BaseView, IPointerClickHandler
             }
             _activeViews.Clear();
             
-            yield return new WaitForSeconds(DialogueManager.instance.flipDelay);
+            yield return new WaitForSeconds(data.flipDelay);
         }
 
         _activeViews.Add(dialogView);
         _dialogViews.Add(info, dialogView);
 
-        dialogView.ShowDialog(data, DialogueManager.instance.typingDelay, DialogueManager.instance.isInstant);
+        dialogView.ShowDialog(info, data._contentSpacing, data.typingDelay, data.isInstant);
 
         while (dialogView.IsTyping)
         {
             yield return null;
 
-            if(!DialogueManager.instance.isAuto && anyKeyDown)
+            if(!data.isAuto && anyKeyDown)
             {
                 dialogView.FinishTyping();
                 break;
@@ -78,8 +78,8 @@ public class StoryView : BaseView, IPointerClickHandler
 
         yield return null;
 
-        if(DialogueManager.instance.isAuto)
-            yield return new WaitForSeconds(DialogueManager.instance.finalDelay);
+        if(data.isAuto)
+            yield return new WaitForSeconds(data.finalDelay);
         else
         {
             while (!anyKeyDown)

@@ -2,42 +2,39 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using Framework.UI;
+using NodeCanvas.DialogueTrees;
 
 public class DialogView : PoolableUIView
 {
     [Header("UI Components")]
     [SerializeField] private Text _contentText;
 
-    [Header("Layout Settings")]
-    [SerializeField] private float _contentSpacing = 1f;
-
     private bool _isTyping;
-    private DialogData _dialogData;
     public bool IsTyping => _isTyping;
+    private string content;
 
     private Transform poolParent;
 
     protected override void Awake()
     {
         base.Awake();
-
-        _contentText.lineSpacing = _contentSpacing;
     }
 
-    public void ShowDialog(DialogData data, float speed, bool instant = false)
+    public void ShowDialog(SubtitlesRequestInfo info,float contentSpacing, float speed, bool instant = false)
     {
         StopAllCoroutines();
 
-        _dialogData = data;
+        _contentText.lineSpacing = contentSpacing;
+        content = info.statement.text;
 
         if (instant)
         {
-            _contentText.text = data.content;
+            _contentText.text = content;
             _isTyping = false;
         }
         else
         {
-            StartCoroutine(TypeText(data.content, speed));
+            StartCoroutine(TypeText(content, speed));
         }
     }
     private IEnumerator TypeText(string content,float speed )
@@ -61,7 +58,7 @@ public class DialogView : PoolableUIView
         {
             StopAllCoroutines();
 
-            _contentText.text = _dialogData.content;
+            _contentText.text = content;
             _isTyping = false;
         }
     }

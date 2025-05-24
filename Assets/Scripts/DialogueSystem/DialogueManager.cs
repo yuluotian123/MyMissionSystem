@@ -5,12 +5,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueManager : MonoSingleton<DialogueManager>
+[Serializable]
+public class DialogData 
 {
+    [Header("Layout设定")]
     [SerializeField]
-    private DialogueTreeController dialogue;
-    [SerializeField]
-    private RectTransform uiRoot;
+    public float _contentSpacing = 1f;
 
     [Header("延迟设定")]
     [SerializeField]
@@ -23,7 +23,17 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     public float finalDelay = 0.5f;
     [SerializeField]
     public float flipDelay = 1.0f;
+}
 
+
+public class DialogueManager : MonoSingleton<DialogueManager>
+{
+    [SerializeField]
+    private DialogueTreeController dialogue;
+    [SerializeField]
+    private RectTransform uiRoot;
+    [SerializeField]
+    private DialogData dialogSettings;
 
     private StoryPresenter storyPresenter = null;
 
@@ -76,7 +86,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         Debug.Log("对话树进入台词");   
         if(storyPresenter != null)
         {
-            storyPresenter.ShowDialog(info); 
+            storyPresenter.ShowDialog(info, dialogSettings);
         }
     }
     private void OnMultipleChoiceRequest(MultipleChoiceRequestInfo info)

@@ -9,11 +9,8 @@ using NodeCanvas.DialogueTrees;
 
 public class StoryPresenter : BasePresenter<StoryView>
 {
-    private List<DialogData> _dialogDatas;
-
     public StoryPresenter(StoryView view) : base(view)
     {
-        _dialogDatas = new List<DialogData>();
     }
 
     public override void Initialize()
@@ -21,16 +18,9 @@ public class StoryPresenter : BasePresenter<StoryView>
         base.Initialize();
     }
 
-    public void ShowDialog(SubtitlesRequestInfo info)
+    public void ShowDialog(SubtitlesRequestInfo info,DialogData data)
     {
-        var text = info.statement.text;
-        var audio = info.statement.audio;
-        var actor = info.actor;
-
-        var dialogData = new DialogData(actor.name, text, actor.portraitSprite, audio);
-        _dialogDatas.Add(dialogData);
-
-        View.ShowDialogue(info,dialogData);
+        View.ShowDialogue(info,data);
     }
 
     public override void Close()
