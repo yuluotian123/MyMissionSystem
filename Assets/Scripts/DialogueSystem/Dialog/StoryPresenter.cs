@@ -18,6 +18,11 @@ public class StoryPresenter : BasePresenter<StoryView>
         base.Initialize();
     }
 
+    public bool ShowMultiChoices(MultipleChoiceRequestInfo info, DialogConfig data,bool isSkip,int index)
+    {
+        return View.ShowMultiChoices(info, data,isSkip,index); 
+    }
+
     public bool ShowDialog(SubtitlesRequestInfo info,DialogConfig data)
     {
         return View.ShowDialogue(info,data);

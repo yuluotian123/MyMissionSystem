@@ -4,9 +4,10 @@ using System.Collections.Generic;
 public class PoolManager : MonoSingleton<PoolManager>
 {
     private Dictionary<string, object> pools = new Dictionary<string, object>();
+
     private Transform poolRoot;
 
-    public ObjectPool<T> CreatePool<T>(T prefab, int initialSize) where T : Component
+    public ObjectPool<T> CreatePool<T>(T prefab, int initialSize,Transform root = null) where T : Component
     {
         string key = typeof(T).Name + prefab.name;
         
@@ -16,8 +17,10 @@ public class PoolManager : MonoSingleton<PoolManager>
         }
 
         // 为该类型的对象创建一个新的父物体
+        if(root == null)
+            root = poolRoot;
         Transform poolParent = new GameObject($"Pool_{prefab.name}").transform;
-        poolParent.SetParent(poolRoot);
+        poolParent.SetParent(root);
 
         ObjectPool<T> newPool = new ObjectPool<T>(prefab, initialSize, poolParent);
         pools.Add(key, newPool);

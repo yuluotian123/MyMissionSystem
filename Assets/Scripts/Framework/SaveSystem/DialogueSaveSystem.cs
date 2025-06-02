@@ -9,16 +9,31 @@ using NodeCanvas.Framework;
 public class S_DialogueTreeData
 {
     public string dialogueTreePath; // 对话树资源路径
-    public List<int> currentNodes;//当前页面的NodeList
+    public List<S_NodeVariable> currentNodes;//当前页面的NodeList
+    public int pageNode;//当前页面的首节点
     public bool isDialogueActive;   // 对话是否激活
     public List<S_DialogueVariable> variables; // 黑板变量列表
 
     public S_DialogueTreeData()
     {
         dialogueTreePath = "";
-        currentNodes = new List<int>();
+        currentNodes = new List<S_NodeVariable>();
         isDialogueActive = false;
         variables = new List<S_DialogueVariable>();
+        pageNode = 0;
+    }
+}
+
+[Serializable]
+public class S_NodeVariable
+{
+    public int ID;
+    public int PreviousID;
+
+    public S_NodeVariable()
+    {
+        ID = -1;
+        PreviousID = -1;
     }
 }
 
@@ -57,9 +72,18 @@ public static partial class SerializedSystem
         dialogueData.dialogueTreePath = controller.graphIsBound?"Bound":GraphPath + controller.graph.name;
 
         // 保存当前节点ID和运行状态
-        if (dialogueTree != null && dialogueTree.currentNode != null)
+        if (dialogueTree != null)
         {
-            dialogueData.currentNodes = DialogueManager.instance.currentNodesList;
+            foreach(var pair in DialogueManager.instance.pageNodesList[dialogueTree.name])
+            {
+                var dialogNode = new S_NodeVariable();
+                dialogNode.ID = pair.currentID;
+                dialogNode.PreviousID = pair.previousID;
+
+                dialogueData.currentNodes.Add(dialogNode);
+            }
+            
+            dialogueData.pageNode = DialogueManager.instance.pageNode;
             dialogueData.isDialogueActive = dialogueTree.isRunning;
         }
 
@@ -86,20 +110,22 @@ public static partial class SerializedSystem
     /// 反序列化对话树状态
     /// </summary>
     /// <returns>是否成功加载</returns>
-    public static bool DeserializeDialogueTree(string jsonPath, string mainGraphPath = "Graph/DialogueTree")
+    public static bool DeserializeDialogueTree(string jsonPath, out S_DialogueTreeData dialogueData, string mainGraphPath = "Graph/DialogueTree")
     {
         string json = ReadJson(jsonPath);
         var controller = DialogueManager.instance.dialogueTreeController;
+        dialogueData = null;
+
         if (string.IsNullOrEmpty(json))
         {
             var dialogueTree = Resources.Load<DialogueTree>(mainGraphPath);
             controller.StartBehaviour(dialogueTree);
-            return true;
+            return false;
         }
 
         DTNode firstNode = null;
 
-        var dialogueData = JsonUtility.FromJson<S_DialogueTreeData>(json);
+        dialogueData = JsonUtility.FromJson<S_DialogueTreeData>(json);
         
         // 加载对话树资源
         if (!string.IsNullOrEmpty(dialogueData.dialogueTreePath))
@@ -145,13 +171,11 @@ public static partial class SerializedSystem
                     // 恢复当前节点
                     if (dialogueData.currentNodes.Count > 0)
                     {
-                        firstNode = (DTNode)currentRunningGraph.GetNodeWithID(dialogueData.currentNodes[0]);
+                        firstNode = (DTNode)currentRunningGraph.GetNodeWithID(dialogueData.pageNode);
 
                     }
 
                     currentRunningGraph.SetCurrentNode(firstNode);
-                    DialogueManager.instance.MoveToCurrentStep(dialogueData.currentNodes);
-
                 }
 
                 return true;
@@ -163,7 +187,7 @@ public static partial class SerializedSystem
         {
             var dialogueTree = Resources.Load<DialogueTree>(mainGraphPath);
             controller.StartBehaviour(dialogueTree);
-            return true;
+            return false;
         }
 
     }

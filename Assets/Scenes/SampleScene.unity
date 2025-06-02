@@ -122,6 +122,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &33537803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 33537805}
+  - component: {fileID: 33537804}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &33537804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33537803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e206e6d89c44240bc4572814bb3533b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &33537805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33537803}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.9700785, y: 1.3545544, z: 7.2036195}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &648350538
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,6 +214,50 @@ MonoBehaviour:
   _portrait: {fileID: 2800000, guid: 06aabe911180fee4dba2602540ab2e96, type: 3}
   _dialogueColor: {r: 0.4026632, g: 1, b: 0.36163503, a: 1}
   _dialogueOffset: {x: 0, y: 0, z: 0}
+--- !u!1 &783474712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 783474714}
+  - component: {fileID: 783474713}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &783474713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783474712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4117ea42fd50f0148b30a56beb165298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &783474714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783474712}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.9700785, y: 1.3545544, z: 7.2036195}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &917056651
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +315,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1059851371}
-  - component: {fileID: 1059851370}
   - component: {fileID: 1059851372}
   m_Layer: 0
   m_Name: dialogueManager
@@ -236,31 +323,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1059851370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059851369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b416ad122fd1084f97ff95806b6c817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogue: {fileID: 1728218309}
-  uiRoot: {fileID: 1567279857}
-  dialogSettings:
-    headerSize: 55
-    _contentSpacing: 1
-    ScreenPadding: {x: 100, y: 100, z: 150, w: 200}
-    ScreenSpacing: 60
-    isAuto: 0
-    isInstant: 0
-    typingDelay: 0.05
-    finalDelay: 0.5
-    flipDelay: 1
-  currentNodesList: 
 --- !u!4 &1059851371
 Transform:
   m_ObjectHideFlags: 0
@@ -285,9 +347,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1059851369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e206e6d89c44240bc4572814bb3533b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b416ad122fd1084f97ff95806b6c817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogue: {fileID: 1728218309}
+  uiRoot: {fileID: 1567279857}
+  dialogSettings:
+    _headerSize: 55
+    _fontSize: 45
+    _contentSpacing: 1
+    _screenPadding: {x: 100, y: 100, z: 150, w: 200}
+    _screenSpacing: 60
+    _choiceSpacing: 20
+    _isAuto: 0
+    _isInstant: 0
+    _typingDelay: 0.05
+    _finalDelay: 0.5
+    _flipDelay: 1
+  pageNode: 0
 --- !u!1 &1251630661
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,3 +823,5 @@ SceneRoots:
   - {fileID: 1251630664}
   - {fileID: 1567279857}
   - {fileID: 1059851371}
+  - {fileID: 33537805}
+  - {fileID: 783474714}

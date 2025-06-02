@@ -13,20 +13,12 @@ MonoBehaviour:
   m_Name: DialogueTree
   m_EditorClassIdentifier: 
   _serializedGraph: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"statement":{"_text":"This
-    is a dialogue text1\nThis is a dialogue text1\nThis is a dialogue text1\nThis
-    is a dialogue text1\nThis is a dialogue text1\nThis is a dialogue text1\nThis
-    is a dialogue text1\nThis is a dialogue text1\nThis is a dialogue text1\nThis
-    is a dialogue text1\nThis is a dialogue text1\nThis is a dialogue text1\nThis
-    is a dialogue text1\nThis is a dialogue text1\nThis is a dialogue text1\nThis
-    is a dialogue text1This is a dialogue text1\nThis is a dialogue text1\nThis is
-    a dialogue text1\nThis is a dialogue text1\nThis is a dialogue text1This is a
-    dialogue text1"},"_actorName":"Second","_actorParameterID":"d6e36c66-69f6-47f5-8332-1223121c2dfa","_position":{"x":809.3333,"y":226.6667},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"0"},{"statement":{"_text":"This
-    is a dialogue text2\nThis is a dialogue text2\nThis is a dialogue text2\nThis
-    is a dialogue text2\nThis is a dialogue text2\nThis is a dialogue text2This is
-    a dialogue text2\nThis is a dialogue text2\nThis is a dialogue text2\nThis is
-    a dialogue text2\nThis is a dialogue text2"},"_actorName":"First","_actorParameterID":"9d2f9b14-e248-449f-8f55-26719dca503d","_position":{"x":796.6667,"y":370.6666},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"1"},{"statement":{"_text":"This
-    is a dialogue text3"},"_position":{"x":807.3334,"y":550.6667},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"2"},{"statement":{"_text":"This
-    is a dialogue text4"},"_position":{"x":783.6667,"y":698.0},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"3"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"First","_id":"9d2f9b14-e248-449f-8f55-26719dca503d","_actorObject":1},{"_keyName":"Second","_id":"d6e36c66-69f6-47f5-8332-1223121c2dfa","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+    is a dialogue text1\nThis is a dialogue text1"},"_actorName":"Second","_actorParameterID":"d6e36c66-69f6-47f5-8332-1223121c2dfa","_position":{"x":809.3333,"y":226.6667},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"0"},{"availableChoices":[{"statement":{"_text":"I
+    am a choice1"}},{"statement":{"_text":"I am a choice2"}}],"_position":{"x":833.0,"y":372.0},"$type":"NodeCanvas.DialogueTrees.MultipleChoiceNode","$id":"1"},{"statement":{"_text":"This
+    is a dialogue text3"},"_position":{"x":648.0001,"y":562.0},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"2"},{"statement":{"_text":"This
+    is a dialogue text3"},"_position":{"x":648.3334,"y":687.3333},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"3"},{"statement":{"_text":"This
+    is a dialogue text4"},"_position":{"x":937.0,"y":562.6667},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"4"},{"statement":{"_text":"This
+    is a dialogue text4"},"_position":{"x":943.0,"y":690.6667},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"5"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"First","_id":"9d2f9b14-e248-449f-8f55-26719dca503d","_actorObject":1},{"_keyName":"Second","_id":"d6e36c66-69f6-47f5-8332-1223121c2dfa","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
   _objectReferences:
   - {fileID: 0}
   - {fileID: 0}

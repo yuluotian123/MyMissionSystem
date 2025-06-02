@@ -7,12 +7,52 @@ namespace Framework.UI
     {
         private Dictionary<string, IPresenter> _presenters = new Dictionary<string, IPresenter>();
         private Dictionary<string, GameObject> _prefabCache = new Dictionary<string, GameObject>();
-        private Dictionary<string, ObjectPool<PoolableUIView>> _uiPools = new Dictionary<string, ObjectPool<PoolableUIView>>();
+
+        public ObjectPool<PoolableUIView> GetUIPool(string prefabPath)
+        {
+            GameObject prefab = LoadUIPrefab(prefabPath);
+            if (prefab == null)
+            {
+                Debug.LogError($"Failed to load UI prefab: {prefabPath}");
+                return null;
+            }
+
+            var poolableView = prefab.GetComponent<PoolableUIView>();
+            return PoolManager.instance.GetPool(poolableView);
+        }
+        public PoolableUIView GetOrCreateUIPoolView(GameObject prefab, Transform parent)
+        {
+            var poolableView = prefab.GetComponent<PoolableUIView>();
+            var pool = PoolManager.instance.GetPool(poolableView);
+            
+            if (pool == null)
+            {
+                // 创建新的对象池
+                pool = PoolManager.instance.CreatePool(poolableView, 1, parent);
+            }
+
+            return pool.Spawn(Vector3.zero, Quaternion.identity);
+        }
+        public GameObject LoadUIPrefab(string path)
+        {
+            if (_prefabCache.TryGetValue(path, out GameObject prefab))
+            {
+                return prefab;
+            }
+
+            prefab = Resources.Load<GameObject>(path);
+            if (prefab != null)
+            {
+                _prefabCache.Add(path, prefab);
+            }
+
+            return prefab;
+        }
 
         public T ShowUI<T>(string prefabPath, Transform parent, bool usePool = true) where T : IPresenter
         {
             string key = typeof(T).Name;
-            
+
             if (_presenters.TryGetValue(key, out IPresenter presenter))
             {
                 presenter.Show();
@@ -32,7 +72,7 @@ namespace Framework.UI
             if (usePool && prefab.GetComponent<PoolableUIView>() != null)
             {
                 // 使用对象池
-                var poolableView = GetOrCreateUIPoolView(prefabPath, prefab, parent);
+                var poolableView = GetOrCreateUIPoolView(prefab, parent);
                 instance = poolableView.gameObject;
                 view = poolableView;
             }
@@ -42,7 +82,7 @@ namespace Framework.UI
                 instance = Instantiate(prefab, parent);
                 view = instance.GetComponent<IView>();
             }
-            
+
             if (view == null)
             {
                 Debug.LogError($"UI prefab does not have an IView component: {prefabPath}");
@@ -52,37 +92,12 @@ namespace Framework.UI
 
             T newPresenter = (T)System.Activator.CreateInstance(typeof(T), view);
             _presenters.Add(key, newPresenter);
-            
+
             newPresenter.Initialize();
             newPresenter.Show();
-            
+
             return newPresenter;
         }
-
-        public ObjectPool<PoolableUIView> GetUIPool(string prefabPath)
-        {
-            if (_uiPools.TryGetValue(prefabPath, out ObjectPool<PoolableUIView> pool))
-            {
-                return pool;
-            }
-
-            Debug.LogError($"this prefabPath doesn't have a objectpool: {prefabPath}");
-            return null;
-        }
-        public PoolableUIView GetOrCreateUIPoolView(string prefabPath, GameObject prefab, Transform parent)
-        {
-            if (!_uiPools.TryGetValue(prefabPath, out ObjectPool<PoolableUIView> pool))
-            {
-                // 创建新的对象池
-                var poolParent = new GameObject($"Pool_{prefab.name}").transform;
-                poolParent.SetParent(parent);
-                pool = new ObjectPool<PoolableUIView>(prefab.GetComponent<PoolableUIView>(), 1, poolParent);
-                _uiPools.Add(prefabPath, pool);
-            }
-
-            return pool.Spawn(Vector3.zero, Quaternion.identity);
-        }
-
         public void HideUI<T>() where T : IPresenter
         {
             string key = typeof(T).Name;
@@ -102,13 +117,10 @@ namespace Framework.UI
                 if (view is PoolableUIView poolableView)
                 {
                     // 如果是池化的UI，返回到对象池
-                    foreach (var pool in _uiPools.Values)
+                    var pool = PoolManager.instance.GetPool(poolableView);
+                    if (pool != null)
                     {
-                        if (pool.GetActiveObjects().Contains(poolableView))
-                        {
-                            pool.Despawn(poolableView);
-                            break;
-                        }
+                        pool.Despawn(poolableView);
                     }
                 }
                 else
@@ -121,30 +133,10 @@ namespace Framework.UI
             }
         }
 
-        public GameObject LoadUIPrefab(string path)
-        {
-            if (_prefabCache.TryGetValue(path, out GameObject prefab))
-            {
-                return prefab;
-            }
-
-            prefab = Resources.Load<GameObject>(path);
-            if (prefab != null)
-            {
-                _prefabCache.Add(path, prefab);
-            }
-
-            return prefab;
-        }
-
         private void OnDestroy()
         {
-            // 清理所有对象池
-            foreach (var pool in _uiPools.Values)
-            {
-                pool.Clear();
-            }
-            _uiPools.Clear();
+            _prefabCache.Clear();
+            _presenters.Clear();
         }
     }
 } 

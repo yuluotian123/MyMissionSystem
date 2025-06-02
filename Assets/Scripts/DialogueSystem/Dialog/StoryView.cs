@@ -4,6 +4,7 @@ using Framework.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using NodeCanvas.DialogueTrees;
+using System;
 
 public class StoryView : BaseView, IPointerClickHandler
 {
@@ -15,34 +16,6 @@ public class StoryView : BaseView, IPointerClickHandler
         _activeViews = new List<DialogView>();
     }
 
-    public override void Close()
-    {
-        DialogueManager.instance.GetDialogueUIPool().Clear();
-        base.Close();
-    }
-
-    private bool CheckAndSetUIRectTransform(DialogView view,DialogConfig data,string contentText)
-    {
-        var anchorPos = new Vector2(data.ScreenPadding.x, -data.ScreenPadding.z);
-        if (_activeViews.Count > 0)
-        {
-            var leftBottomPos = _activeViews[_activeViews.Count - 1].GetLeftBottomPos();
-            anchorPos = new Vector2(data.ScreenPadding.x ,- leftBottomPos.y - data.ScreenSpacing);
-        }
-
-        var textSize = view.SetDialogRect(data._contentSpacing,data.ScreenPadding.x,data.ScreenPadding.y, contentText);
-        view.GetComponent<RectTransform>().anchoredPosition = anchorPos;
-
-        if ((anchorPos.y - textSize.y) <= (-Screen.height + data.ScreenPadding.z))
-        {
-            anchorPos = new Vector2(data.ScreenPadding.x, -data.ScreenPadding.z);
-            view.GetComponent<RectTransform>().anchoredPosition = anchorPos;
-            return true;
-        }
-
-        return false;
-    }
-
     /// <summary>
     /// 返回是否翻页
     /// </summary>
@@ -51,6 +24,8 @@ public class StoryView : BaseView, IPointerClickHandler
     /// <returns></returns>
     public bool ShowDialogue(SubtitlesRequestInfo info,DialogConfig data)
     {
+        var dialogView = DialogueManager.instance.GetOrCreateDialogueUIView(this.transform);
+
         //读取名字信息
         var hasName = false;
         var nameContent = "";
@@ -61,11 +36,27 @@ public class StoryView : BaseView, IPointerClickHandler
             hasName = true;
         }
 
-        var dialogView = DialogueManager.instance.GetOrCreateDialogueUIView(this.transform);
+        //设置单句对话文本的位置和大小信息并检测是否需要翻页
         var isFlip = false;
+        var anchorPos = new Vector2(data._screenPadding.x, -data._screenPadding.z);
+        if (_activeViews.Count > 0)
+        {
+            var leftBottomPos = _activeViews[_activeViews.Count - 1].GetLeftBottomPos();
+            Debug.Log(leftBottomPos);
+            anchorPos = new Vector2(data._screenPadding.x, -leftBottomPos.y - data._screenSpacing);
+        }
 
-        //设置当前dialogView的大小和位置，如果满一页则翻页
-        if (CheckAndSetUIRectTransform(dialogView, data, nameContent + info.statement.text))
+        var textSize = dialogView.SetDialog(data._screenPadding.x, data._screenPadding.y, data._contentSpacing, data._fontSize, nameContent + info.statement.text);
+        dialogView.GetComponent<RectTransform>().anchoredPosition = anchorPos;
+        if ((anchorPos.y - textSize.y) <= (-Screen.height + data._screenPadding.z))
+        {
+            anchorPos = new Vector2(data._screenPadding.x, -data._screenPadding.z);
+            dialogView.GetComponent<RectTransform>().anchoredPosition = anchorPos;
+            isFlip = true;
+        }
+
+        //设置当前dialogView的大小和位置，如果满一页则清空上一页所有UI
+        if (isFlip)
         {
             var pool = DialogueManager.instance.GetDialogueUIPool();
 
@@ -73,11 +64,10 @@ public class StoryView : BaseView, IPointerClickHandler
                 pool.Despawn(view);
 
             _activeViews.Clear();
-            isFlip = true;
         }
         _activeViews.Add(dialogView);
 
-        StartCoroutine(Internal_ShowDialog(dialogView,info, info.statement.text,nameContent,data.typingDelay,data.finalDelay,data.flipDelay,hasName,data.isInstant,data.isAuto,isFlip));
+        StartCoroutine(Internal_ShowDialog(dialogView,info, info.statement.text,nameContent,data._typingDelay,data._finalDelay,data._flipDelay,hasName,data._isInstant,data._isAuto,isFlip));
 
         return isFlip;
     }
@@ -118,6 +108,62 @@ public class StoryView : BaseView, IPointerClickHandler
         info.Continue();
     }
 
+    public bool ShowMultiChoices(MultipleChoiceRequestInfo info, DialogConfig data,bool isSkip = false,int index = -1)
+    {
+        var dialogView = DialogueManager.instance.GetOrCreateDialogueUIView(this.transform);
+
+
+        var isFlip = false;
+        var anchorPos = new Vector2(data._screenPadding.x, -data._screenPadding.z);
+        if (_activeViews.Count > 0)
+        {
+            var leftBottomPos = _activeViews[_activeViews.Count - 1].GetLeftBottomPos();
+            anchorPos = new Vector2(data._screenPadding.x, -leftBottomPos.y - data._screenSpacing);
+        }
+
+        var totalSize = dialogView.ShowMultiChoices(info, data._screenPadding.x, data._screenPadding.y, data._contentSpacing, data._choiceSpacing,data._fontSize);
+
+        dialogView.GetComponent<RectTransform>().anchoredPosition = anchorPos;
+        if ((anchorPos.y - totalSize.y) <= (-Screen.height + data._screenPadding.z))
+        {
+            anchorPos = new Vector2(data._screenPadding.x, -data._screenPadding.z);
+            dialogView.GetComponent<RectTransform>().anchoredPosition = anchorPos;
+            isFlip = true;
+        }
+
+        //设置当前dialogView的大小和位置，如果满一页则清空上一页所有UI
+        if (isFlip)
+        {
+            var pool = DialogueManager.instance.GetDialogueUIPool();
+
+            foreach (var view in _activeViews)
+                pool.Despawn(view);
+
+            _activeViews.Clear();
+        }
+        _activeViews.Add(dialogView);
+
+        StartCoroutine(Internal_ShowMultiChoices(dialogView,info,data._flipDelay, isFlip,isSkip, index));
+
+        return isFlip;
+    }
+    IEnumerator Internal_ShowMultiChoices(DialogView view,MultipleChoiceRequestInfo info, float flipDelay,bool isFlip,bool isSkip,int index)
+    {
+        view.Hide();
+
+        if (isFlip)
+            yield return new WaitForSeconds(flipDelay);
+
+        if (isSkip && index != -1)
+        {
+
+            yield return null;
+            view.FinishingChoice(info, index);
+        }
+
+
+        view.Show();
+    }
 
     private bool anyKeyDown;
     public void OnPointerClick(PointerEventData eventData) => anyKeyDown = true;
