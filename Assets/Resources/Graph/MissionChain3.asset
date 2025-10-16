@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69bc10ea020d44118faa5d1957a2b66e, type: 3}
   m_Name: MissionChain3
   m_EditorClassIdentifier: 
-  _serializedGraph: '{"type":"YLT.MissionSystem.MissionChain","nodes":[{"$type":"YLT.MissionSystem.NodeStart","$id":"0"},{"action":{"message":"intree2","_node":{"$ref":"1"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":344.5089,"y":-136.9145},"$type":"YLT.MissionSystem.NodeAction","$id":"1"},{"_requires":[{"eventType":"E","count":1,"useMessage":true,"_conditions":[],"_unfolded":true,"_node":{"$ref":"2"},"$type":"MissionRequireWithConditionTemplate"}],"_UID":"8f82b94a-fd96-41b0-9f03-55521e1bd7d4","_position":{"x":483.0867,"y":60.5824},"$type":"YLT.MissionSystem.NodeMission","$id":"2"},{"action":{"message":"d2_1","_node":{"$ref":"3"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":805.6852,"y":-25.61365},"$type":"YLT.MissionSystem.NodeAction","$id":"3"}],"connections":[{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"2"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"YLT.MissionSystem.ConnectionBase"}],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
+  _serializedGraph: '{"type":"YLT.MissionSystem.MissionChain","nodes":[{"$type":"YLT.MissionSystem.NodeStart","$id":"0"},{"action":{"message":"intree2","_node":{"$ref":"1"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":344.5089,"y":-136.9145},"$type":"YLT.MissionSystem.NodeAction","$id":"1"},{"_requires":[{"eventType":"E","count":1,"useMessage":true,"_conditions":[],"_unfolded":true,"_node":{"$ref":"2"},"$type":"MissionRequireWithConditionTemplate"}],"_UID":"8f82b94a-fd96-41b0-9f03-55521e1bd7d4","_position":{"x":367.0867,"y":90.5824},"$type":"YLT.MissionSystem.NodeMission","$id":"2"},{"action":{"message":"d2_1","_node":{"$ref":"3"},"_unfolded":true,"$type":"YLT.MissionSystem.DebugLog"},"_position":{"x":805.6852,"y":-25.61365},"$type":"YLT.MissionSystem.NodeAction","$id":"3"}],"connections":[{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[],"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"2"},"$type":"YLT.MissionSystem.ConnectionBase"},{"_conditions":[{"$type":"YLT.MissionSystem.Dice"}],"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"YLT.MissionSystem.ConnectionBase"}],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
   _objectReferences: []
   _graphSource:
     _version: 3.3
     _category: 
     _comments: 
-    _translation: {x: -40, y: 315}
+    _translation: {x: 116, y: 320}
     _zoomFactor: 1
   _haltSerialization: 0
   _externalSerializationFile: {fileID: 0}

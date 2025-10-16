@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -24,6 +24,16 @@ public class S_MissionManagerData
     }
 
 }
+/// <summary>
+/// 储存任务内部的完成情况
+/// </summary>
+[Serializable]
+public class S_MissionData
+{
+    
+}
+
+
 [Serializable]
 public class S_MissionChainManagerData
 {
@@ -65,18 +75,18 @@ public static partial class SerializedSystem
     /// </summary>
     public static void SerializeMissionSystem(string jsonPath)
     {
-        var missionManager = GameManager.instance.MissionManager;
+        var missionManager = GameManager.instance.missionManager;
         if (missionManager == null)
             return;
 
         var missionManagerData = new S_MissionManagerData();
 
-        //获取当前运行中的missionid（后续还要储存条件）
+        //获取当前进行中的missionid（后续还要储存条件）
         foreach(var mission in missionManager.allMissions)
         {
             missionManagerData.missionids.Add(mission.Key);
         }
-        //获取当前运行中的graphid
+        //获取当前运行中的graphid(chainHandle)
         foreach(var missionChainComponent in missionManager.components)
         {
             var missionchainManager = (MissionChainManager)missionChainComponent;

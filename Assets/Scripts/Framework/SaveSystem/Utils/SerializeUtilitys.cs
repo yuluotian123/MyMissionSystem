@@ -10,13 +10,15 @@ using System.IO;
 public partial class SerializedSystem
 {
     public static readonly string GraphPath = "Graph/";
+    //ä»»åŠ¡ç³»ç»Ÿçš„æµ‹è¯•å­˜æ¡£
     public static readonly string JsonPathTest = Application.streamingAssetsPath + "/JsonTest.json";
+    //å¯¹è¯ç³»ç»Ÿçš„æµ‹è¯•å­˜æ¡£
     public static readonly string JsonPathTest2 = Application.streamingAssetsPath + "/JsonTest2.json";
 
     private static void SaveJson<T>(T data, string jsonPath)
     {
         StreamWriter writer;
-        //Èç¹û±¾µØÃ»ÓĞ¶ÔÓ¦µÄjson ÎÄ¼ş£¬ÖØĞÂ´´½¨
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ğ¶ï¿½Ó¦ï¿½ï¿½json ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½
         if (!File.Exists(jsonPath))
         {
             writer = File.CreateText(jsonPath);

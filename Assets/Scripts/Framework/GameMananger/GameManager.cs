@@ -5,24 +5,14 @@ using YLT.MissionSystem;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public MissionManager<object> MissionManager;
+    public MissionManager<object> missionManager;
 
     protected override void OnInit()
     {
-        StartMissionSystem();
-        StartDialogueSystem();
-    }
-
-    private void StartDialogueSystem()
-    {
         Debug.Log("InitDialogueSystem");
         DialogueManager.instance.StartDialogueTree();
-    }
-
-    private void StartMissionSystem()
-    {
         Debug.Log("Start Chain");
-        this.MissionManager = SerializedSystem.DeSerializeMissionSystem(SerializedSystem.JsonPathTest);
+        missionManager = SerializedSystem.DeSerializeMissionSystem(SerializedSystem.JsonPathTest);
     }
 
     void Update()
