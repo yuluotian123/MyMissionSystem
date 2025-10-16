@@ -25,7 +25,6 @@ public class DialogConfig
     [SerializeField]
     public float _choiceSpacing = 20f;
 
-
     [Header("延迟设置")]
     [SerializeField]
     public bool _isAuto = false;
@@ -98,12 +97,33 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     public DialogueTreeController dialogueTreeController => dialogue;
     [SerializeField]
     private RectTransform uiRoot;
+    public bool Hide
+    {
+        set
+        {
+            SetDialogueViewHide(value);
+            hide = value;
+        }
+        get
+        {
+            return hide;
+        }
+
+    }
+
+
+    [SerializeField,SetProperty("Hide")]
+    private bool hide = false;
+
     [SerializeField]
     private DialogConfig dialogSettings = new DialogConfig();
 
+
     private DialogueTree dialogueTree => DialogueTree.currentDialogue;
+
     private StoryPresenter storyPresenter = null;
     private bool skip = false;
+
 
     //保存数据（节点node信息，当前页面对应的分页信息）
     public Dictionary<string,List<NodeConnectInform>> pageNodesList = new Dictionary<string, List<NodeConnectInform>>();
@@ -260,18 +280,18 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
     public void StartDialogueTree()
     {
-        if(SerializedSystem.DeserializeDialogueTree(SerializedSystem.JsonPathTest2,out var dialogueData))
+        if (SerializedSystem.DeserializeDialogueTree(SerializedSystem.JsonPathTest2, out var dialogueData))
         {
             skip = true;
             pageNode = dialogueData.pageNode;
             pageNodesList.Add(dialogueTree.name, new List<NodeConnectInform>());
 
-            for (int i = 0; i < dialogueData.currentNodes.Count; i++ )
+            for (int i = 0; i < dialogueData.currentNodes.Count; i++)
             {
                 var node = dialogueData.currentNodes[i];
                 pageNodesList[dialogueTree.name].Add(new NodeConnectInform(node.PreviousID, node.ID));
             }
-                
+
         }
         else
         {
@@ -280,5 +300,13 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         }
 
         storyPresenter = UIManager.instance.ShowUI<StoryPresenter>(prefabPath + "Story", uiRoot, false);
+    }
+
+    public void SetDialogueViewHide(bool isHide)
+    {
+        if (isHide)
+            UIManager.instance.HideUI<StoryPresenter>();
+        else
+            storyPresenter = UIManager.instance.ShowUI<StoryPresenter>(prefabPath + "Story", uiRoot, false);        
     }
 }

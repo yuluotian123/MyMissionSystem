@@ -182,6 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue: {fileID: 1728218309}
   uiRoot: {fileID: 1567279857}
+  hide: 0
   dialogSettings:
     _headerSize: 55
     _fontSize: 45

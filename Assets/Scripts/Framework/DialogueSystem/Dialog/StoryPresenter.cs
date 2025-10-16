@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.EventSystems;
 using Framework.UI;
 using NodeCanvas.DialogueTrees;
+using System;
 
 public class StoryPresenter : BasePresenter<StoryView>
 {
@@ -18,15 +19,16 @@ public class StoryPresenter : BasePresenter<StoryView>
         base.Initialize();
     }
 
-    public bool ShowMultiChoices(MultipleChoiceRequestInfo info, DialogConfig data,bool isSkip,int index)
+    public bool ShowMultiChoices(MultipleChoiceRequestInfo info, DialogConfig data, bool isSkip, int index)
     {
-        return View.ShowMultiChoices(info, data,isSkip,index); 
+        return View.ShowMultiChoices(info, data, isSkip, index);
     }
 
-    public bool ShowDialog(SubtitlesRequestInfo info,DialogConfig data)
+    public bool ShowDialog(SubtitlesRequestInfo info, DialogConfig data)
     {
-        return View.ShowDialogue(info,data);
+        return View.ShowDialogue(info, data);
     }
+
 
     public override void Close()
     {

@@ -17,26 +17,25 @@ public class StoryView : BaseView, IPointerClickHandler
     }
 
     /// <summary>
-    /// 返回是否翻页
+    /// 锟斤拷锟斤拷锟角凤拷页
     /// </summary>
     /// <param name="info"></param>
     /// <param name="data"></param>
     /// <returns></returns>
     public bool ShowDialogue(SubtitlesRequestInfo info,DialogConfig data)
     {
+        Debug.Log("ShowDialogue");
         var dialogView = DialogueManager.instance.GetOrCreateDialogueUIView(this.transform);
 
-        //读取名字信息
         var hasName = false;
         var nameContent = "";
         if (info.actor != null)
         {
             var actor = info.actor;
-            nameContent = string.Format("<size={0}><color=#{1}>{2}</color></size>\n", 55, UnityEngine.ColorUtility.ToHtmlStringRGBA(actor.dialogueColor), actor.name);
+            nameContent = string.Format("<size={0}><color=#{1}>{2}</color></size>\n", 55, ColorUtility.ToHtmlStringRGBA(actor.dialogueColor), actor.name);
             hasName = true;
         }
 
-        //设置单句对话文本的位置和大小信息并检测是否需要翻页
         var isFlip = false;
         var anchorPos = new Vector2(data._screenPadding.x, -data._screenPadding.z);
         if (_activeViews.Count > 0)
@@ -55,7 +54,6 @@ public class StoryView : BaseView, IPointerClickHandler
             isFlip = true;
         }
 
-        //设置当前dialogView的大小和位置，如果满一页则清空上一页所有UI
         if (isFlip)
         {
             var pool = DialogueManager.instance.GetDialogueUIPool();
@@ -73,11 +71,9 @@ public class StoryView : BaseView, IPointerClickHandler
     }
     IEnumerator Internal_ShowDialog(DialogView dialogView,SubtitlesRequestInfo info, string statement,string nameContent,float typingDelay,float finalDelay,float flipDelay,bool hasName,bool isInstant,bool isAuto,bool isFlip)
     {
-
         if(isFlip)
             yield return new WaitForSeconds(flipDelay);
 
-        //显示dialog对应页面
         dialogView.ShowDialog(statement, typingDelay, isInstant,nameContent,hasName);
 
         while (dialogView.IsTyping)
@@ -131,7 +127,7 @@ public class StoryView : BaseView, IPointerClickHandler
             isFlip = true;
         }
 
-        //设置当前dialogView的大小和位置，如果满一页则清空上一页所有UI
+        //锟斤拷锟矫碉拷前dialogView锟侥达拷小锟斤拷位锟矫ｏ拷锟斤拷锟斤拷锟揭灰筹拷锟斤拷锟斤拷锟斤拷一页锟斤拷锟斤拷UI
         if (isFlip)
         {
             var pool = DialogueManager.instance.GetDialogueUIPool();
@@ -166,6 +162,11 @@ public class StoryView : BaseView, IPointerClickHandler
     }
 
     private bool anyKeyDown;
-    public void OnPointerClick(PointerEventData eventData) => anyKeyDown = true;
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        //Debug.Log("GetPointer");
+        anyKeyDown = true;
+        //Debug.Log(anyKeyDown);
+    }
     private void LateUpdate() => anyKeyDown = false;
 }
