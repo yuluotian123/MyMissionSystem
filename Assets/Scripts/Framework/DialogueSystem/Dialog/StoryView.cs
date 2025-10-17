@@ -44,7 +44,6 @@ public class StoryView : BaseView, IPointerClickHandler
             Debug.Log(leftBottomPos);
             anchorPos = new Vector2(data._screenPadding.x, -leftBottomPos.y - data._screenSpacing);
         }
-
         var textSize = dialogView.SetDialog(data._screenPadding.x, data._screenPadding.y, data._contentSpacing, data._fontSize, nameContent + info.statement.text);
         dialogView.GetComponent<RectTransform>().anchoredPosition = anchorPos;
         if ((anchorPos.y - textSize.y) <= (-Screen.height + data._screenPadding.z))
@@ -65,7 +64,8 @@ public class StoryView : BaseView, IPointerClickHandler
         }
         _activeViews.Add(dialogView);
 
-        StartCoroutine(Internal_ShowDialog(dialogView,info, info.statement.text,nameContent,data._typingDelay,data._finalDelay,data._flipDelay,hasName,data._isInstant,data._isAuto,isFlip));
+        //StartCoroutine(Internal_ShowDialog(dialogView,info, info.statement.text,nameContent,data._typingDelay,data._finalDelay,data._flipDelay,hasName,data._isInstant,data._isAuto,isFlip));
+        CoroutineManager.instance.StartPersistentCoroutine(this,Internal_ShowDialog(dialogView,info, info.statement.text,nameContent,data._typingDelay,data._finalDelay,data._flipDelay,hasName,data._isInstant,data._isAuto,isFlip));
 
         return isFlip;
     }
@@ -127,7 +127,6 @@ public class StoryView : BaseView, IPointerClickHandler
             isFlip = true;
         }
 
-        //���õ�ǰdialogView�Ĵ�С��λ�ã������һҳ�������һҳ����UI
         if (isFlip)
         {
             var pool = DialogueManager.instance.GetDialogueUIPool();
@@ -139,7 +138,8 @@ public class StoryView : BaseView, IPointerClickHandler
         }
         _activeViews.Add(dialogView);
 
-        StartCoroutine(Internal_ShowMultiChoices(dialogView,info,data._flipDelay, isFlip,isSkip, index));
+        //StartCoroutine(Internal_ShowMultiChoices(dialogView,info,data._flipDelay, isFlip,isSkip, index));
+        CoroutineManager.instance.StartPersistentCoroutine(this,Internal_ShowMultiChoices(dialogView,info,data._flipDelay, isFlip,isSkip, index));
 
         return isFlip;
     }

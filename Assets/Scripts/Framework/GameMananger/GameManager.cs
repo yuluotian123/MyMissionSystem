@@ -9,8 +9,6 @@ public class GameManager : MonoSingleton<GameManager>
 
     protected override void OnInit()
     {
-        Debug.Log("InitDialogueSystem");
-        DialogueManager.instance.StartDialogueTree();
         Debug.Log("Start Chain");
         missionManager = SerializedSystem.DeSerializeMissionSystem(SerializedSystem.JsonPathTest);
     }
@@ -45,6 +43,12 @@ public class GameManager : MonoSingleton<GameManager>
         {
             Debug.Log("MSG: E");
             GameAPI.Broadcast(new GameMessage(GameEventType.E));
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("MSG: F");
+            DialogueManager.instance.StartDialogueTree();
         }
 
         if (Input.GetKeyDown(KeyCode.S))

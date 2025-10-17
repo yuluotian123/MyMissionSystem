@@ -1,6 +1,6 @@
 using UnityEngine;
 
-//Monoµ¥ÀýÀà
+//Monoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     protected static T m_instance = null;
@@ -11,7 +11,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         {
             if (m_instance == null)
             {
-                m_instance = (T)FindObjectOfType<T>();
+                m_instance = (T)FindFirstObjectByType<T>();
             }
 
             return m_instance;
@@ -22,14 +22,14 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     {
         if (instance != null && instance != this.gameObject.GetComponent<T>())
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
 
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
         m_instance = gameObject.GetComponent<T>();
 
-        this.OnInit();
+        OnInit();
     }
 
     protected virtual void OnInit() { }

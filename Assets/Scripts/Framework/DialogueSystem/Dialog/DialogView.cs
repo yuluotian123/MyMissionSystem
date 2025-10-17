@@ -37,7 +37,9 @@ public class DialogView : PoolableUIView
         _statementGroup.gameObject.SetActive(true);
         _optionalGroup.gameObject.SetActive(false);
 
-        StopAllCoroutines();
+        //StopAllCoroutines();
+
+        CoroutineManager.instance.StopPersistentCoroutineAll(this);
 
         _contentCache = nameContent + commentContent;
 
@@ -48,14 +50,17 @@ public class DialogView : PoolableUIView
         }
         else
         {
-            StartCoroutine(TypeText(commentContent, speed,nameContent,hasCharacterName));
+            //StartCoroutine(TypeText(commentContent, speed,nameContent,hasCharacterName));
+            CoroutineManager.instance.StartPersistentCoroutine(this,TypeText(commentContent, speed,nameContent,hasCharacterName));
         }
     }
     public void FinishTyping()
     {
         if (_isTyping)
         {
-            StopAllCoroutines();
+            //StopAllCoroutines();
+            CoroutineManager.instance.StopPersistentCoroutineAll(this);
+
 
             _contentText.text = _contentCache;
             _isTyping = false;
