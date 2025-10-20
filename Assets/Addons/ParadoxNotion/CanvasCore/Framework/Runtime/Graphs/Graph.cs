@@ -641,7 +641,6 @@ namespace NodeCanvas.Framework
 
         ///<summary>Pauses the graph from updating as well as notifying all nodes.</summary>
         public void Pause() {
-
             if ( !isRunning || isPaused ) {
                 return;
             }

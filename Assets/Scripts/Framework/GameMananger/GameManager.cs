@@ -1,8 +1,10 @@
-﻿using NodeCanvas.Tasks.Actions;
-using System;
 using UnityEngine;
 using YLT.MissionSystem;
+using Framework.UI;
 
+
+[DisallowMultipleComponent]
+[AddComponentMenu("PlayerSystem/GameManager")]
 public class GameManager : MonoSingleton<GameManager>
 {
     public MissionManager<object> missionManager;
@@ -10,10 +12,12 @@ public class GameManager : MonoSingleton<GameManager>
     protected override void OnInit()
     {
         Debug.Log("Start Chain");
-        missionManager = SerializedSystem.DeSerializeMissionSystem(SerializedSystem.JsonPathTest);
+        missionManager = MissionManager<object>.StartMissionManager();
+        Debug.Log("StartDialogueSystem");
+        DialogueManager.instance.StartDialogueSystem();
     }
 
-    void Update()
+    /*void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -57,5 +61,14 @@ public class GameManager : MonoSingleton<GameManager>
             GameAPI.Save();
         }
 
+    }*/
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("Save");
+            GameAPI.Save();
+        }
     }
 }

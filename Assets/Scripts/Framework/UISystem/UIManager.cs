@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Framework.UI
 {
+    [DisallowMultipleComponent]
+    [AddComponentMenu("DialogueSystem/DialogueManager")]
     public class UIManager : MonoSingleton<UIManager>
     {
         private Dictionary<string, IPresenter> _presenters = new Dictionary<string, IPresenter>();
@@ -20,6 +22,19 @@ namespace Framework.UI
             var poolableView = prefab.GetComponent<PoolableUIView>();
             return PoolManager.instance.GetPool(poolableView);
         }
+        public void ClearUIPool(string prefabPath)
+        {
+            GameObject prefab = LoadUIPrefab(prefabPath);
+            if (prefab == null)
+            {
+                Debug.LogError($"Failed to load UI prefab: {prefabPath}");
+                return;
+            }
+            var poolableView = prefab.GetComponent<PoolableUIView>();
+
+            PoolManager.instance.ClearPool(poolableView);
+        }
+
         public PoolableUIView GetOrCreateUIPoolView(GameObject prefab, Transform parent)
         {
             var poolableView = prefab.GetComponent<PoolableUIView>();

@@ -57,7 +57,7 @@ public class JsonFilesCleaner : EditorWindow
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("将删除以下文件:", EditorStyles.boldLabel);
-            
+
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(200));
             foreach (string file in foundFiles)
             {

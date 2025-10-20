@@ -196,6 +196,8 @@ namespace YLT.MissionSystem
         //此列表会储存所有任务父图（没有任何父任务链的任务图）
         public readonly List<IMissionSystemComponent<T>> components = new List<IMissionSystemComponent<T>>();
 
+        public static MissionManager<object> StartMissionManager() => SerializedSystem.DeSerializeMissionSystem(SerializedSystem.JsonPathTest); 
+
         /// <summary>启动目标任务</summary>
         /// <param name="proto"></param>
         /// <returns></returns>

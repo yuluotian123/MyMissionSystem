@@ -1,37 +1,33 @@
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine.EventSystems;
-using Framework.UI;
 using NodeCanvas.DialogueTrees;
-using System;
 
-public class StoryPresenter : BasePresenter<StoryView>
+
+namespace Framework.UI
 {
-    public StoryPresenter(StoryView view) : base(view)
+    public class StoryPresenter : BasePresenter<StoryView>
     {
-    }
+        public StoryPresenter(StoryView view) : base(view)
+        {
+        }
 
-    public override void Initialize()
-    {
-        base.Initialize();
-    }
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
 
-    public bool ShowMultiChoices(MultipleChoiceRequestInfo info, DialogConfig data, bool isSkip, int index)
-    {
-        return View.ShowMultiChoices(info, data, isSkip, index);
-    }
+        public bool ShowMultiChoices(MultipleChoiceRequestInfo info, DialogConfig data, bool isSkip, int index)
+        {
+            return View.ShowMultiChoices(info, data, isSkip, index);
+        }
 
-    public bool ShowDialog(SubtitlesRequestInfo info, DialogConfig data)
-    {
-        return View.ShowDialogue(info, data);
-    }
+        public bool ShowDialog(SubtitlesRequestInfo info, DialogConfig data)
+        {
+            return View.ShowDialogue(info, data);
+        }
 
 
-    public override void Close()
-    {
-        base.Close();
+        public override void Close()
+        {
+            base.Close();
+        }
     }
 }

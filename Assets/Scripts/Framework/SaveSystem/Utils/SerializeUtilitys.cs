@@ -10,6 +10,10 @@ using System.IO;
 public partial class SerializedSystem
 {
     public static readonly string GraphPath = "Graph/";
+    public static readonly string MissionGraphPath = "Graph/Missions/";
+    public static readonly string DialogueTreePath = "Graph/DialogueTrees/";
+    public static readonly string BehaviorTreePath = "Graph/BehaviorTrees/";
+
     //任务系统的测试存档
     public static readonly string JsonPathTest = Application.streamingAssetsPath + "/JsonTest.json";
     //对话系统的测试存档

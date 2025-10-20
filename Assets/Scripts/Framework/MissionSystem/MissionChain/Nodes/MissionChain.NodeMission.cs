@@ -96,7 +96,7 @@ namespace YLT.MissionSystem
                     builder.AppendLine(require.Summary);
 
                 }
-                GUILayout.Label(builder.ToString().Trim('\n'));
+                GUILayout.Label(builder.ToString());
             }
             GUILayout.EndVertical();
         }

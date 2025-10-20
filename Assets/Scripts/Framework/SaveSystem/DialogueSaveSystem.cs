@@ -1,26 +1,38 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using NodeCanvas.DialogueTrees;
 using NodeCanvas.Framework;
+using Framework.UI;
+using System.Linq;
 
+[Serializable]
+public class S_DialogueSystemData
+{
+    public List<S_DialogueTreeData> dialogueTrees;
+    public S_DialogueSystemData()
+    {
+        dialogueTrees = new List<S_DialogueTreeData>();
+    }
+}
 [Serializable]
 public class S_DialogueTreeData
 {
+    public string controllerName; //对话树使用的controller
     public string dialogueTreePath; // 对话树资源路径
     public List<S_NodeVariable> currentNodes;//当前页面的NodeList
     public int pageNode;//当前页面的首节点
     public bool isDialogueActive;   // 对话是否激活
-    public List<S_DialogueVariable> variables; // 黑板变量列表
+    public bool isCurrentDialogue;//是否是正在进行中的DialogueTree
 
     public S_DialogueTreeData()
     {
+        controllerName = "";
         dialogueTreePath = "";
         currentNodes = new List<S_NodeVariable>();
         isDialogueActive = false;
-        variables = new List<S_DialogueVariable>();
         pageNode = 0;
+        isCurrentDialogue = false;
     }
 }
 
@@ -36,23 +48,7 @@ public class S_NodeVariable
         PreviousID = -1;
     }
 }
-
-[Serializable]
-public class S_DialogueVariable
-{
-    public string name;
-    public string value;
-    public string type;
-
-    public S_DialogueVariable(string name, object value, Type type)
-    {
-        this.name = name;
-        this.value = value?.ToString() ?? "";
-        this.type = type.FullName;
-    }
-}
-
-public static partial class SerializedSystem
+public partial class SerializedSystem
 {
     /// <summary>
     /// 序列化对话树状态
@@ -62,133 +58,124 @@ public static partial class SerializedSystem
     {
         var controller = DialogueManager.instance.dialogueTreeController;
 
-        if (controller == null || controller.graph == null)
+        if (controller == null || controller.behaviour == null)
             return;
+        var dialogueSystemData = new S_DialogueSystemData();
+        var dialogueDataList = new List<S_DialogueTreeData>();
 
-        var dialogueData = new S_DialogueTreeData();
-        var dialogueTree = DialogueTree.currentDialogue;
-        
-        // 保存对话树资源路径
-        dialogueData.dialogueTreePath = controller.graphIsBound?"Bound":GraphPath + controller.graph.name;
-
-        // 保存当前节点ID和运行状态
-        if (dialogueTree != null)
+        foreach (var dialogueTreeData in DialogueManager.instance.pageNodesList)
         {
-            foreach(var pair in DialogueManager.instance.pageNodesList[dialogueTree.name])
+            if (DialogueManager.instance.graphSkipList.TryGetValue(dialogueTreeData.Key, out var skipData))
             {
-                var dialogNode = new S_NodeVariable();
-                dialogNode.ID = pair.currentID;
-                dialogNode.PreviousID = pair.previousID;
+                //如果当前对话为完成状态，则不保存此对话树
+                if (skipData.isFinished)
+                    continue;
 
-                dialogueData.currentNodes.Add(dialogNode);
-            }
-            
-            dialogueData.pageNode = DialogueManager.instance.pageNode;
-            dialogueData.isDialogueActive = dialogueTree.isRunning;
-        }
+                var data = new S_DialogueTreeData();
 
-        // 保存黑板变量
-        if (controller.blackboard != null)
-        {
-            foreach (var variable in controller.blackboard.variables)
-            {
-                if (variable.Value != null)
+                //如果此对话树为当前正在使用的对话树，则其在储存内容中标识为正在进行的对话树，以便于反序列化时可以快速定位
+                if (skipData.isCurrentDialogue && skipData.contollerName == controller.name)
                 {
-                    dialogueData.variables.Add(new S_DialogueVariable(
-                        variable.Key,
-                        variable.Value.value,
-                        variable.Value.varType
-                    ));
+                    data.dialogueTreePath = controller.graphIsBound ? "Bound" : DialogueTreePath + controller.behaviour.name;
+                    data.isCurrentDialogue = true;
+                    data.isDialogueActive = controller.behaviour.isRunning && !controller.behaviour.isPaused;
                 }
+                else
+                {
+                    data.dialogueTreePath = DialogueTreePath + dialogueTreeData.Key;
+                    data.isCurrentDialogue = false;
+                    data.isDialogueActive = false;
+                }
+
+                //储存节点信息，目前还很简陋，需要后续拓展
+                foreach (var node in dialogueTreeData.Value)
+                {
+                    var dialogNode = new S_NodeVariable();
+                    dialogNode.ID = node.currentID;
+                    dialogNode.PreviousID = node.previousID;
+                    data.currentNodes.Add(dialogNode);
+                }
+
+                //储存当前进行到的分页（决定反序列化或者重新加载时从哪个节点开始对话树）以及当前对话树使用的controller（目前没什么用处）
+                data.pageNode = skipData.pageNode;
+                data.controllerName = skipData.contollerName;
+
+                dialogueDataList.Add(data);
             }
+
         }
 
-        SaveJson(dialogueData, jsonPath);
+        dialogueSystemData.dialogueTrees = dialogueDataList;
+        SaveJson(dialogueSystemData, jsonPath);
     }
 
     /// <summary>
-    /// 反序列化对话树状态
+    /// 反序列化对话树状态:如果没有存档，则调用controller目前所有的dialoguetree
     /// </summary>
     /// <returns>是否成功加载</returns>
-    public static bool DeserializeDialogueTree(string jsonPath, out S_DialogueTreeData dialogueData, string mainGraphPath = "Graph/DialogueTree")
+    public static bool DeserializeDialogueSystem(string jsonPath, out bool isRunning)
     {
         string json = ReadJson(jsonPath);
-        var controller = DialogueManager.instance.dialogueTreeController;
-        dialogueData = null;
+        isRunning = false;
 
-        if (string.IsNullOrEmpty(json))
+        //如果没有读到json或者json为null，则返回，不执行反序列化操作
+        if (string.IsNullOrEmpty(json)) return false;
+
+        var dialogueDataList = JsonUtility.FromJson<S_DialogueSystemData>(json).dialogueTrees;
+
+        if (dialogueDataList.Count == 0) return false;
+
+        foreach (var data in dialogueDataList)
         {
-            var dialogueTree = Resources.Load<DialogueTree>(mainGraphPath);
-            controller.StartBehaviour(dialogueTree);
-            return false;
-        }
+            //找到graphPath对应的Graph的名称（仅限于从硬盘中读取的对话树）
+            string graphName = data.dialogueTreePath.Remove(0, DialogueTreePath.Count());
 
-        DTNode firstNode = null;
-
-        dialogueData = JsonUtility.FromJson<S_DialogueTreeData>(json);
-        
-        // 加载对话树资源
-        if (!string.IsNullOrEmpty(dialogueData.dialogueTreePath))
-        {
-            DialogueTree dialogueTree = null;
-            if (dialogueData.dialogueTreePath == "Bound")
+            //从存档中检测是否为当前正在进行的对话树
+            if (data.isCurrentDialogue)
             {
-                if (controller.graphIsBound)
+                isRunning = data.isDialogueActive;
+
+                //获取存档中当前正在使用的dialogueController
+                var controller = GameObject.Find(data.controllerName).GetComponent<DialogueTreeController>();
+                if (controller == null)
+                {
+                    Debug.LogError("无法获取当前的Controller：" + data.controllerName);
+                    return false;
+                }
+                DialogueManager.instance.dialogueTreeController = controller;
+
+                //获取存档中当前正在使用的dialogueTree
+                DialogueTree dialogueTree = null;
+
+                if (data.dialogueTreePath == "Bound" && controller.graphIsBound)
                     dialogueTree = controller.behaviour;
-            }
-            else
-                dialogueTree = Resources.Load<DialogueTree>(dialogueData.dialogueTreePath);
+                else
+                    dialogueTree = Resources.Load<DialogueTree>(data.dialogueTreePath);
 
-            if (dialogueTree != null)
+                if (dialogueTree == null)
+                {
+                    Debug.LogError("无法获取指定的dialogueTree：" + data.dialogueTreePath + "绑定：" + controller.graphIsBound);
+                    return false;
+                }
+
+                controller.behaviour = dialogueTree;
+                graphName = dialogueTree.name;
+            }
+
+            var skipData = new DialogueManager.SkipData(data.pageNode, data.isCurrentDialogue, false, data.controllerName);
+            var listData = new List<NodeConnectInform>();
+
+            for (int i = 0; i < data.currentNodes.Count; i++)
             {
-                // 恢复黑板变量
-                if (controller.blackboard != null)
-                {
-                    foreach (var varData in dialogueData.variables)
-                    {
-                        try
-                        {
-                            Type varType = Type.GetType(varData.type);
-                            if (varType != null)
-                            {
-                                object value = Convert.ChangeType(varData.value, varType);
-                                controller.blackboard.SetVariableValue(varData.name, value);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogWarning($"Failed to restore variable {varData.name}: {e.Message}");
-                        }
-                    }
-                }
-
-                // 如果对话是激活状态，重新启动对话树
-                if (dialogueData.isDialogueActive)
-                {
-                    
-                    controller.StartBehaviour(dialogueTree);
-                    var currentRunningGraph = DialogueTree.currentDialogue;
-                    // 恢复当前节点
-                    if (dialogueData.currentNodes.Count > 0)
-                    {
-                        firstNode = (DTNode)currentRunningGraph.GetNodeWithID(dialogueData.pageNode);
-
-                    }
-
-                    currentRunningGraph.SetCurrentNode(firstNode);
-                }
-
-                return true;
+                var node = data.currentNodes[i];
+                listData.Add(new NodeConnectInform(node.PreviousID, node.ID));
             }
 
-            return false;
-        }
-        else
-        {
-            var dialogueTree = Resources.Load<DialogueTree>(mainGraphPath);
-            controller.StartBehaviour(dialogueTree);
-            return false;
+            DialogueManager.instance.graphSkipList.Add(graphName, skipData);
+            DialogueManager.instance.pageNodesList.Add(graphName, listData);
+
         }
 
+        return true;
     }
-} 
+}

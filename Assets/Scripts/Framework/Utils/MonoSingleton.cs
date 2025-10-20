@@ -1,6 +1,6 @@
 using UnityEngine;
 
-//Mono������
+
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     protected static T m_instance = null;
@@ -22,11 +22,17 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     {
         if (instance != null && instance != this.gameObject.GetComponent<T>())
         {
+            Debug.LogWarning("场景中存在多个实例，自动销毁重复实例。");
             Destroy(gameObject);
             return;
         }
 
-        DontDestroyOnLoad(gameObject);
+
+        //如果为根节点，则设置为不可销毁
+        if (transform.root == transform)
+            DontDestroyOnLoad(gameObject);
+
+
         m_instance = gameObject.GetComponent<T>();
 
         OnInit();

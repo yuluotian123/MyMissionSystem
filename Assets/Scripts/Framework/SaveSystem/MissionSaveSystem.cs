@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Framework.GamePlay;
 using UnityEngine;
 using YLT.MissionSystem;
 
@@ -32,8 +33,6 @@ public class S_MissionData
 {
     
 }
-
-
 [Serializable]
 public class S_MissionChainManagerData
 {
@@ -67,7 +66,7 @@ public class S_ChainHandleData
 /// 序列化系统（静态类）
 /// 包含一系列序列化函数
 /// </summary>
-public static partial class SerializedSystem
+public partial class SerializedSystem
 {
 
     /// <summary>
@@ -131,7 +130,7 @@ public static partial class SerializedSystem
     /// </summary>
     /// <param name="mainGraphPath"></param>
     /// <returns></returns>
-    public static MissionManager<object> DeSerializeMissionSystem(string jsonPath,string mainGraphPath = "Graph/Main")
+    public static MissionManager<object> DeSerializeMissionSystem(string jsonPath,string mainGraphPath = "Main")
     {
         var missionManager = new MissionManager<object>();
         string json = ReadJson(jsonPath);
@@ -140,7 +139,7 @@ public static partial class SerializedSystem
             missionManager = new MissionManager<object>();
             var missionChainManager = new MissionChainManager(missionManager);
             missionManager.AddComponent(missionChainManager);
-            missionChainManager.StartChain(Resources.Load<MissionChain>(mainGraphPath));
+            missionChainManager.StartChain(Resources.Load<MissionChain>(MissionGraphPath + mainGraphPath));
 
             return missionManager;
         }
@@ -155,7 +154,7 @@ public static partial class SerializedSystem
             {
                 //获取任务图信息
                 var graphname = handleData.missionChainData;
-                var chain = Resources.Load<MissionChain>(GraphPath + graphname);
+                var chain = Resources.Load<MissionChain>(MissionGraphPath + graphname);
 
                 //获取对应的任务
                 var missionNodeList = new List<NodeMission>();
