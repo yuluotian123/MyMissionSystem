@@ -19,7 +19,7 @@ MonoBehaviour:
     dimension: 1
   contribution:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.244
 --- !u!114 &-4444681020182042181
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -54,7 +54,7 @@ MonoBehaviour:
   active: 1
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.6981132, g: 0.5380382, b: 0.2799039, a: 1}
+    m_Value: {r: 0.41678792, g: 0.4245283, b: 0.23028658, a: 1}
   center:
     m_OverrideState: 1
     m_Value: {x: 0.5, y: 0.5}

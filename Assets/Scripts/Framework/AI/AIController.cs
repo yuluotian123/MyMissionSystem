@@ -45,22 +45,10 @@ public class AIController : MonoBehaviour
             {
                 AIManager.instance.AssignBehaviourTree(gameObject, graphName);
             }
+
+            if (startOnRegister)
+                AIManager.instance.StartAI(gameObject);
         }
-
-    }
-
-    private void Start()
-    {
-        
-        if (AIManager.instance == null)
-        {
-            Debug.LogWarning("AIInitializer: AIManager.Instance 为空，无法自动启动。");
-            return;
-        }
-
-        if (startOnRegister)
-            AIManager.instance.StartAI(gameObject);
-
     }
 
     private void OnDisable()
@@ -74,10 +62,11 @@ public class AIController : MonoBehaviour
 
     private void OnDestroy()
     {
-        // 可选：销毁时停止 AI。注意：未做反注册，AIManager 内部以 InstanceID 索引并在下一帧失效。
+        // 销毁时停止并反注册，避免 AIManager 持有跨场景的失效引用
         if (AIManager.instance != null)
         {
             AIManager.instance.StopAI(gameObject);
+            AIManager.instance.UnregisterNPC(gameObject);
         }
     }
 

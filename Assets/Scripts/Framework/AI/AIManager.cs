@@ -3,6 +3,7 @@ using UnityEngine;
 using NodeCanvas.Framework;
 using NodeCanvas.BehaviourTrees;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// AIManager - 用于集中管理NPC的AI行为，参考“模拟人生”风格的需求驱动，
@@ -118,6 +119,51 @@ public class AIManager : MonoSingleton<AIManager>
 
         return agent;
     }
+    /// <summary>
+    /// 取消注册NPC，移除内部缓存，避免跨场景持有失效引用
+    /// </summary>
+    public void UnregisterNPC(GameObject npc)
+    {
+        if (npc == null) return;
+        var id = npc.GetInstanceID();
+        if (agents.TryGetValue(id, out var agent))
+        {
+            if (agent.btOwner != null)
+            {
+                agent.btOwner.StopBehaviour();
+            }
+            agents.Remove(id);
+        }
+    }
+
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        CleanupInvalidAgents();
+    }
+    protected override void OnSceneUnloaded(Scene scene)
+    {
+        // 场景卸载前先清理失效引用，避免持有已销毁组件
+        CleanupInvalidAgents();
+    }
+    /// <summary>
+    /// 清理已失效的Agent（GameObject/组件被销毁）
+    /// </summary>
+    private void CleanupInvalidAgents()
+    {
+        var toRemove = new List<int>();
+        foreach (var kv in agents)
+        {
+            var a = kv.Value;
+            if (a == null || a.gameObject == null || a.btOwner == null || a.blackboard == null)
+            {
+                toRemove.Add(kv.Key);
+            }
+        }
+        foreach (var id in toRemove)
+        {
+            agents.Remove(id);
+        }
+    }
 
     /// <summary>
     /// 从 Resources 加载 BehaviourTree 资产。
@@ -177,8 +223,10 @@ public class AIManager : MonoSingleton<AIManager>
     public NPCAgent GetAgent(GameObject npc)
     {
         if (npc == null) return null;
+
         agents.TryGetValue(npc.GetInstanceID(), out var agent);
         return agent;
+        
     }
 
     /// <summary>
@@ -235,30 +283,11 @@ public class AIManager : MonoSingleton<AIManager>
     }
 
     /// <summary>
-    /// 每帧更新需求衰减并同步到黑板
-    /// </summary>
-    private void Update()
-    {
-        /*float dt = Time.deltaTime;
-        foreach (var kv in agents) {
-            var agent = kv.Value;
-            for (int i = 0; i < defaultNeeds.Count; i++) {
-                var def = defaultNeeds[i];
-                float current = agent.needs.TryGetValue(def.name, out var val) ? val : def.startValue;
-                current = Mathf.Clamp(current - def.decayPerSecond * dt, def.min, def.max);
-                agent.needs[def.name] = current;
-                SetBlackboardFloat(agent, def.name, current);
-            }
-        }*/
-    }
-
-    /// <summary>
     /// 将数值同步到Blackboard变量（不存在则创建）
     /// </summary>
     private void SetBlackboardFloat(NPCAgent agent, string varName, float value)
     {
         if (agent?.blackboard == null) return;
-
         agent.blackboard.SetVariableValue(varName, value);
 
     }

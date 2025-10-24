@@ -19,8 +19,6 @@ namespace NodeCanvas.Tasks.Actions
         protected override void OnUpdate() {
 
             if ( ( agent.position - target.value.transform.position ).magnitude <= stopDistance.value ) {
-                Debug.Log(target.value);
-                Debug.Log((agent.position - target.value.transform.position).magnitude);
                 EndAction();
                 return;
             }

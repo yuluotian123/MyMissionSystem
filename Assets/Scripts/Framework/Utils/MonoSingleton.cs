@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
@@ -20,10 +22,10 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
 
     private void Awake()
     {
-        if (instance != null && instance != this.gameObject.GetComponent<T>())
+        if (instance != null && instance != gameObject.GetComponent<T>())
         {
             Debug.LogWarning("场景中存在多个实例，自动销毁重复实例。");
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
             return;
         }
 
@@ -34,8 +36,26 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
 
 
         m_instance = gameObject.GetComponent<T>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
 
         OnInit();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    protected virtual void OnSceneUnloaded(Scene arg0)
+    {
+        
+    }
+
+    protected virtual void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        
     }
 
     protected virtual void OnInit() { }
@@ -43,5 +63,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     protected void OnApplicationQuit()
     {
         m_instance = null;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 }
