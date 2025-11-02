@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 0
-  m_FogColor: {r: 0.10070309, g: 0.2924528, b: 0.24596803, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.046
+  m_FogColor: {r: 0.13381097, g: 0.2924528, b: 0.25360173, a: 1}
+  m_FogMode: 2
+  m_FogDensity: 0.059
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -130,9 +130,9 @@ GameObject:
   - component: {fileID: 373274}
   - component: {fileID: 373273}
   - component: {fileID: 373272}
-  - component: {fileID: 373276}
   - component: {fileID: 373271}
   - component: {fileID: 373275}
+  - component: {fileID: 373276}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: Untagged
@@ -20951,13 +20951,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697333592}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.4207453, y: 0.37733406, z: -0.039743472, w: -0.82402235}
+  m_LocalRotation: {x: -0.82900023, y: 0.27928692, z: -0.25682557, w: -0.41085038}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 484521799}
-  m_LocalEulerAnglesHint: {x: 46.336, y: -418.457, z: -21.409}
+  m_LocalEulerAnglesHint: {x: 55.553, y: -560.309, z: -153.542}
 --- !u!114 &1697333595
 MonoBehaviour:
   m_ObjectHideFlags: 0

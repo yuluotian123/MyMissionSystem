@@ -67,7 +67,7 @@ namespace Framework.GamePlay
 
         void Start()
         {
-            // 查找 CinemachineBrain（通常在主摄像机上）
+            // 查找 CinemachineBrain
             var mainCam = Camera.main;
             if (mainCam != null)
             {
@@ -108,17 +108,14 @@ namespace Framework.GamePlay
             }
 
             // 应用默认目标（如果有）
-            if (defaultFollow != null || defaultLookAt != null)
+            if (defaultFollow == null || defaultLookAt == null)
             {
-                Debug.Log(defaultFollow.name);
-                SetFollowLookAt(defaultFollow, defaultLookAt);
+                var defaultPos = FindFirstObjectByType<PlayerController>().transform;
+                defaultFollow = defaultPos;
+                defaultLookAt = defaultPos;
             }
-            else
-            {
-                defaultFollow = FindFirstObjectByType<PlayerController>().transform;
-                defaultLookAt = FindFirstObjectByType<PlayerController>().transform;
-                SetFollowLookAt(defaultFollow, defaultLookAt);
-            }
+
+            SetFollowLookAt(defaultFollow, defaultLookAt);
         }
 
         void OnValidate()

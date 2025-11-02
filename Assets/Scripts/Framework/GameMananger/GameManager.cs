@@ -127,7 +127,16 @@ public class GameManager : MonoSingleton<GameManager>
         player.SetPosition(spawnPos);
     }
 
-    /*void Update()
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("Save");
+            GameAPI.Save();
+        }
+    }
+
+        /*void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -173,12 +182,4 @@ public class GameManager : MonoSingleton<GameManager>
 
     }*/
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("Save");
-            GameAPI.Save();
-        }
-    }
 }
