@@ -1,8 +1,17 @@
 ﻿<Solution>
+  <Project Path="CrashKonijn.Goap.Runtime.csproj" />
   <Project Path="NodeCanvas.csproj" />
+  <Project Path="CrashKonijn.Goap.Editor.csproj" />
+  <Project Path="CrashKonijn.Agent.Runtime.csproj" />
+  <Project Path="com.exhard.exgas.editor.csproj" />
   <Project Path="ParadoxNotion.csproj" />
+  <Project Path="com.exhard.exgas.runtime.csproj" />
+  <Project Path="CrashKonijn.Goap.Resolver.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="CrashKonijn.Agent.Core.csproj" />
+  <Project Path="CrashKonijn.Goap.Core.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
+  <Project Path="com.exhard.exgas.general.csproj" />
   <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="Assembly-CSharp-Editor-firstpass.csproj" />
   <Project Path="AimingRig.csproj" />

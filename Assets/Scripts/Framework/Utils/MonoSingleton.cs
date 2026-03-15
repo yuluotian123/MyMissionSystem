@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -46,19 +48,16 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
+
+        OnRemove();
     }
 
-    protected virtual void OnSceneUnloaded(Scene arg0)
-    {
-        
-    }
+    protected virtual void OnSceneUnloaded(Scene arg0){     }
 
-    protected virtual void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-    {
-        
-    }
+    protected virtual void OnSceneLoaded(Scene arg0, LoadSceneMode arg1){}
 
     protected virtual void OnInit() { }
+    protected virtual void OnRemove(){}
 
     protected void OnApplicationQuit()
     {

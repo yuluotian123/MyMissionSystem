@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 [DisallowMultipleComponent]
 [AddComponentMenu("Utils/PoolManager")]
 public class PoolManager : MonoSingleton<PoolManager>
 {
+    [ShowInInspector]
     private Dictionary<string, object> pools = new Dictionary<string, object>();
 
     private Transform poolRoot;

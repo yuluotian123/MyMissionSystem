@@ -148,7 +148,7 @@ namespace Framework.UI
             }
         }
 
-        private void OnDestroy()
+        protected override void OnRemove()
         {
             _prefabCache.Clear();
             _presenters.Clear();

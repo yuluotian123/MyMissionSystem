@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c712e05924784c5593896e5c7c1d2708, type: 3}
+  m_Name: AttackMMC
+  m_EditorClassIdentifier: com.exhard.exgas.runtime::GAS.Runtime.AttributeBasedModCalculation
+  Description: "\u6839\u636E\u653B\u51FB\u529B\u6263\u9664\u8840\u91CF\n"
+  captureType: 1
+  attributeFromType: 0
+  attributeName: AS_Character.ATK
+  attributeSetName: AS_Character
+  attributeShortName: ATK
+  k: 1
+  b: 0

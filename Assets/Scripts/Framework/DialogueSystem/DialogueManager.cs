@@ -159,20 +159,7 @@ namespace Framework.UI
         public Dictionary<string, SkipData> graphSkipList = new Dictionary<string, SkipData>();
         private bool skip = false;
 
-        void Awake()
-        {
-            Subscribe();
-        }
-        void OnDestroy()
-        {
-            UnSubscribe();
-        }
-        void OnDisable()
-        {
-            UnSubscribe();
-        }
-
-        void Subscribe()
+        protected override void OnInit()
         {
             DialogueTree.OnDialogueStarted += OnDialogueStarted;
             DialogueTree.OnDialoguePaused += OnDialoguePaused;
@@ -180,7 +167,7 @@ namespace Framework.UI
             DialogueTree.OnSubtitlesRequest += OnSubtitlesRequest;
             DialogueTree.OnMultipleChoiceRequest += OnMultipleChoiceRequest;
         }
-        void UnSubscribe()
+        protected override void OnRemove()
         {
             DialogueTree.OnDialogueStarted -= OnDialogueStarted;
             DialogueTree.OnDialoguePaused -= OnDialoguePaused;
@@ -189,7 +176,7 @@ namespace Framework.UI
             DialogueTree.OnMultipleChoiceRequest -= OnMultipleChoiceRequest;
         }
 
-        void OnDialogueStarted(DialogueTree dlg)
+        private void OnDialogueStarted(DialogueTree dlg)
         {
             Debug.Log("OnDialogueStart: " + dlg.name);
 
@@ -222,11 +209,11 @@ namespace Framework.UI
                 pageNodesList.Add(dlg.name, new List<NodeConnectInform>());
             }
         }
-        void OnDialoguePaused(DialogueTree dlg)
+        private void OnDialoguePaused(DialogueTree dlg)
         {
             UIManager.instance.HideUI<StoryPresenter>();
         }
-        void OnDialogueFinished(DialogueTree dlg)
+        private void OnDialogueFinished(DialogueTree dlg)
         {
             if (graphSkipList.TryGetValue(dlg.name, out var skipData))
             {
@@ -236,7 +223,7 @@ namespace Framework.UI
 
             UIManager.instance.CloseUI<StoryPresenter>();
         }
-        void OnSubtitlesRequest(SubtitlesRequestInfo info)
+        private void OnSubtitlesRequest(SubtitlesRequestInfo info)
         {
             if (storyPresenter != null)
             {
@@ -279,7 +266,7 @@ namespace Framework.UI
                 }
             }
         }
-        void OnMultipleChoiceRequest(MultipleChoiceRequestInfo info)
+        private void OnMultipleChoiceRequest(MultipleChoiceRequestInfo info)
         {
             if (storyPresenter != null)
             {
@@ -333,7 +320,7 @@ namespace Framework.UI
             Debug.Log(skip);
 
         }
-        void SetDialogueViewHide(bool isHide)
+        private void SetDialogueViewHide(bool isHide)
         {
             if (isHide)
                 UIManager.instance.HideUI<StoryPresenter>();
@@ -341,40 +328,36 @@ namespace Framework.UI
                 storyPresenter = UIManager.instance.ShowUI<StoryPresenter>(prefabPath + "Story", uiRoot, false);
         }
 
+        /// <summary>
+        /// 公用方法：清理对话UI对象池
+        /// </summary>
+        /// <param name="_parent"></param>
+        /// <returns></returns>
         public DialogView GetOrCreateDialogueUIView(Transform _parent)
         {
             var prefab = UIManager.instance.LoadUIPrefab(prefabPath + "DialogueView");
             return (DialogView)UIManager.instance.GetOrCreateUIPoolView(prefab, _parent);
         }
+        /// <summary>
+        /// 公用方法：获取对话UIPool
+        /// </summary>
+        /// <returns></returns>
         public ObjectPool<PoolableUIView> GetDialogueUIPool()
         {
             return UIManager.instance.GetUIPool(prefabPath + "DialogueView");
         }
+        /// <summary>
+        /// 公用方法：清理对话UI对象池
+        /// </summary>
         public void ClearDialogueUIPool()
         {
             UIManager.instance.ClearUIPool(prefabPath + "DialogueView");
         }
+
         /// <summary>
-        /// 从 Resources 加载 BehaviourTree 资产。
-        /// 例如 graphName = "Citizen" 将尝试加载 Resources/Graph/BehaviorTree/Citizen.asset
+        /// 公用方法：从存档中启动DialogueSystem并进行检查
         /// </summary>
-        public DialogueTree LoadDialogueTree(string graphName)
-        {
-            if (string.IsNullOrWhiteSpace(graphName))
-            {
-                Debug.LogError("LoadDialogueTree: graphName 为空");
-                return null;
-            }
-            var root = string.IsNullOrWhiteSpace(SerializedSystem.DialogueTreePath) ? "" : SerializedSystem.DialogueTreePath.TrimEnd('/');
-            var path = string.IsNullOrEmpty(root) ? graphName : (root + "/" + graphName);
-            var tree = Resources.Load<DialogueTree>(path);
-            if (tree == null)
-            {
-                Debug.LogError($"未能在 Resources/{path} 加载 DialogueTree。请确认资源存在并放在 Resources 目录下。");
-            }
-            return tree;
-        }
-        //启动DialogueSystem并进行检查
+        /// <param name="start"></param>
         public void StartDialogueSystem(bool start = false)
         {
             if (uiRoot == null)
@@ -390,6 +373,11 @@ namespace Framework.UI
             }
         }
 
+        /// <summary>
+        /// 公用方法：切换对话树
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="start"></param>
         public void SwitchDialogueTree(string graphName,bool start= true)
         {
             var dialogueTree = LoadDialogueTree(graphName);
@@ -405,6 +393,12 @@ namespace Framework.UI
             
 
         }
+        /// <summary>
+        /// 公用方法：切换对话controller（对象）
+        /// </summary>
+        /// <param name="characterName"></param>
+        /// <param name="graphName"></param>
+        /// <param name="start"></param>
         public void SwitchDialogueController(string characterName,string graphName = "",bool start= true)
         {
             var controller = GameObject.Find(characterName).GetComponentInChildren<DialogueTreeController>(true);
@@ -427,6 +421,27 @@ namespace Framework.UI
                 
                 SwitchDialogueTree(graphName, start);                           
             }
+        }
+
+         /// <summary>
+        /// 从 Resources 加载 BehaviourTree 资产。
+        /// 例如 graphName = "Citizen" 将尝试加载 Resources/Graph/BehaviorTree/Citizen.asset
+        /// </summary>
+        private DialogueTree LoadDialogueTree(string graphName)
+        {
+            if (string.IsNullOrWhiteSpace(graphName))
+            {
+                Debug.LogError("LoadDialogueTree: graphName 为空");
+                return null;
+            }
+            var root = string.IsNullOrWhiteSpace(SerializedSystem.DialogueTreePath) ? "" : SerializedSystem.DialogueTreePath.TrimEnd('/');
+            var path = string.IsNullOrEmpty(root) ? graphName : (root + "/" + graphName);
+            var tree = Resources.Load<DialogueTree>(path);
+            if (tree == null)
+            {
+                Debug.LogError($"未能在 Resources/{path} 加载 DialogueTree。请确认资源存在并放在 Resources 目录下。");
+            }
+            return tree;
         }
     }
 }

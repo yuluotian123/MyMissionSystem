@@ -11,14 +11,6 @@ using System.Linq;
 public class GameManager : MonoSingleton<GameManager>
 {
     public MissionManager<object> missionManager;
-
-    // 场景与出生点管理
-    [SerializeField]
-    private bool useGlobalDefaultSpawn = false;
-    [SerializeField]
-    private Vector3 globalDefaultSpawn;
-    private bool isLoadingScene = false;
-
     protected override void OnInit()
     {
         Debug.Log("Start Chain");
@@ -26,6 +18,13 @@ public class GameManager : MonoSingleton<GameManager>
         Debug.Log("StartDialogueSystem");
         DialogueManager.instance.StartDialogueSystem();
     }
+
+    // 场景与出生点管理
+    [SerializeField]
+    private bool useGlobalDefaultSpawn = false;
+    [SerializeField]
+    private Vector3 globalDefaultSpawn;
+    private bool isLoadingScene = false;
 
     /// <summary>
     /// 按名称切换场景（异步）
@@ -46,7 +45,6 @@ public class GameManager : MonoSingleton<GameManager>
             Debug.LogError($"LoadSceneAsync failed for {sceneName}");
         }
     }
-
     /// <summary>
     /// 重载当前场景
     /// </summary>
@@ -55,7 +53,6 @@ public class GameManager : MonoSingleton<GameManager>
         var current = SceneManager.GetActiveScene();
         LoadSceneByName(current.name);
     }
-
     /// <summary>
     /// 通过 BuildIndex 切换场景
     /// </summary>
@@ -126,60 +123,4 @@ public class GameManager : MonoSingleton<GameManager>
         // 设置玩家位置
         player.SetPosition(spawnPos);
     }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("Save");
-            GameAPI.Save();
-        }
-    }
-
-        /*void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("MSG: A");
-            GameAPI.Broadcast(new GameMessage(GameEventType.A));
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Debug.Log("MSG: B");
-            GameAPI.Broadcast(new GameMessage(GameEventType.B));
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log("MSG: C");
-            GameAPI.Broadcast(new GameMessage(GameEventType.C));
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Debug.Log("MSG: D");
-            GameAPI.Broadcast(new GameMessage(GameEventType.D));
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("MSG: E");
-            GameAPI.Broadcast(new GameMessage(GameEventType.E));
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log("MSG: F");
-            DialogueManager.instance.StartDialogueTree();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("Save");
-            GameAPI.Save();
-        }
-
-    }*/
-
 }

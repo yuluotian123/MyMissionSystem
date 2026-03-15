@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -14,6 +15,7 @@ public class CoroutineManager : MonoSingleton<CoroutineManager>
     }
 
 
+    [ShowInInspector]
     private Dictionary<MonoBehaviour, List<TrackedRoutine>> coroutineList = new Dictionary<MonoBehaviour, List<TrackedRoutine>>();
 
     // 外部调用此方法来启动持久协程
