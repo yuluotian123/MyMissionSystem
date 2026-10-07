@@ -1,0 +1,18 @@
+PASS: tile compute matches raster local-light oracle; error=0
+PASS: six-face point shadow occludes the receiver; lit=0.117262 shadowed=0
+PASS: R16F front hemisphere stores nearer radial blocker; receiver/sample=RGBA(0.206299, 0.110413, 0.000000, 1.000000)
+PASS: R16F back hemisphere stores nearer radial blocker; receiver/sample=RGBA(0.206299, 0.110413, 0.000000, 1.000000)
+PASS: paraboloid hemisphere seam preserves occlusion; back/front=0/0
+PASS: metal receives mip-dependent specular IBL
+PASS: static rigid object velocity is zero
+PASS: rigid motion has current-minus-previous UV sign; velocity=0.04995117
+PASS: explicit history reset removes object motion
+PASS: resolution change discards object and camera history
+PASS: large camera cut discards previous velocity
+PASS: static HDR/post temporal histories converge without brightness drift
+PASS: resized temporal histories initialize from current HDR
+PASS: camera cut removes HDR/post ghost history; fresh=RGBA(0.171875, 0.107544, 0.037781, 1.000000) cut=RGBA(0.171875, 0.107544, 0.037781, 1.000000)
+PASS: dual 3D LUT selects near and far grading by reconstructed distance
+PASS: local irradiance cube replaces global diffuse IBL inside its region
+PASS: local diffuse IBL fades continuously into global coverage at box boundary
+PASS: regional fog modifies HDR before grading and film curve

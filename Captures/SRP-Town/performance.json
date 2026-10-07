@@ -1,0 +1,36 @@
+{
+    "unity": "6000.3.10f1",
+    "gpu": "NVIDIA GeForce RTX 5080",
+    "api": "Direct3D11",
+    "utc": "2026-10-07T07:52:14.6901899Z",
+    "frameTimingEnabled": true,
+    "measurements": [
+        {
+            "width": 1280,
+            "height": 720,
+            "samples": 0,
+            "gpuMedianMs": 0.0,
+            "gpuP95Ms": 0.0,
+            "cpuMedianMs": 2.3752,
+            "gpuTimingAvailable": false
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "samples": 0,
+            "gpuMedianMs": 0.0,
+            "gpuP95Ms": 0.0,
+            "cpuMedianMs": 2.5677,
+            "gpuTimingAvailable": false
+        },
+        {
+            "width": 2560,
+            "height": 1440,
+            "samples": 0,
+            "gpuMedianMs": 0.0,
+            "gpuP95Ms": 0.0,
+            "cpuMedianMs": 2.8506,
+            "gpuTimingAvailable": false
+        }
+    ]
+}

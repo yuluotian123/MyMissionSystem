@@ -17,6 +17,9 @@
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
+# Local RenderDoc captures are large; keep analysis evidence in Documentation/Rendering.
+/Captures/**/*.rdc
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 

@@ -1,0 +1,95 @@
+#pragma kernel BuildLightTiles
+#pragma kernel ShadeLocalLights
+#include "RelinkSourceLighting.cginc"
+#include "RelinkLocalShadow.cginc"
+Texture2D<float> _SceneDepth;
+Texture2D<float4> _SceneBase,_SceneMask,_SceneNormal;
+RWTexture2D<float3> _SceneLightingOutput;
+Texture2DArray<float> _SceneLocalShadow;
+Texture2DArray<float> _SceneParaboloidShadow;
+SamplerComparisonState sampler_SceneLocalShadow;
+RWStructuredBuffer<uint> _LightTiles;
+float4x4 _RelinkInverseVP,_RelinkView,_RelinkCurrentVP;
+float4 _RelinkScreen,_RelinkCamera;
+float4 _SceneLightPositions[32],_SceneLightColors[32],_SceneLightDirections[32],_SceneLightSpots[32],_SceneLightShadow[32];
+float4x4 _SceneLocalMatrices[16];
+int _TileCountX,_SceneLightCount,_UseLocalShadows;
+int _DebugLocalShadow;
+groupshared uint minimumZ,maximumZ;
+float3 Position(uint2 pixel) {
+    float2 uv=(pixel+.5)*_RelinkScreen.xy;
+    float4 p=mul(_RelinkInverseVP,float4(uv*float2(2,-2)+float2(-1,1),_SceneDepth.Load(int3(pixel,0)),1));
+    return p.xyz/p.w;
+}
+[numthreads(8,8,1)]
+void BuildLightTiles(uint3 group:SV_GroupID,uint3 thread:SV_GroupThreadID,uint index:SV_GroupIndex) {
+    if(index==0) {minimumZ=asuint(1e8);maximumZ=0;}
+    GroupMemoryBarrierWithGroupSync();
+    uint2 pixel=group.xy*16+thread.xy*2;
+    if(all(pixel<uint2(_RelinkScreen.zw)) && _SceneDepth.Load(int3(pixel,0))>0) {
+        float z=-mul(_RelinkView,float4(Position(pixel),1)).z;
+        InterlockedMin(minimumZ,asuint(max(0,z))); InterlockedMax(maximumZ,asuint(max(0,z)));
+    }
+    GroupMemoryBarrierWithGroupSync();
+    if(index!=0) return;
+    uint start=(group.y*_TileCountX+group.x)*33,count=0;
+    float2 uvMin=float2(group.xy*16)*_RelinkScreen.xy,uvMax=float2(group.xy*16+16)*_RelinkScreen.xy;
+    [loop] for(uint i=0;i<(uint)_SceneLightCount;i++) {
+        float radius=rsqrt(_SceneLightPositions[i].w);
+        float depth=-mul(_RelinkView,float4(_SceneLightPositions[i].xyz,1)).z;
+        if(depth+radius<asfloat(minimumZ) || depth-radius>asfloat(maximumZ)) continue;
+        float4 clip=mul(_RelinkCurrentVP,float4(_SceneLightPositions[i].xyz,1));
+        float2 center=clip.xy/max(clip.w,.01)*float2(.5,-.5)+.5;
+        float2 extent=radius/max(depth-radius,.1);
+        if(all(center+extent>=uvMin) && all(center-extent<=uvMax)) _LightTiles[start+1+count++]=i;
+    }
+    _LightTiles[start]=count;
+}
+float LocalVisibility(float3 world,uint light) {
+    if(_UseLocalShadows==0 || _SceneLightShadow[light].x<0) return 1;
+    int layer=(int)_SceneLightShadow[light].x;
+    if(_SceneLightShadow[light].y==2) {
+        int hemisphere;float3 coord=RelinkParaboloidCoord(world,_SceneLightPositions[light].xyz,_SceneLightShadow[light].w,
+            rsqrt(_SceneLightPositions[light].w),hemisphere);
+        return lerp(1,RelinkParaboloidVisibility(_SceneParaboloidShadow,coord,layer+hemisphere),_SceneLightShadow[light].z);
+    }
+    if(_SceneLightShadow[light].y>1) {
+        float3 ray=world-_SceneLightPositions[light].xyz, a=abs(ray);
+        int face=a.x>=a.y && a.x>=a.z?(ray.x>0?0:1):a.y>=a.z?(ray.y>0?2:3):(ray.z>0?4:5); layer+=face;
+    }
+    float4 clip=mul(_SceneLocalMatrices[layer],float4(world,1)); float3 coord=clip.xyz/clip.w;
+    if(any(coord.xy<0)||any(coord.xy>1)) return 1;
+    float visibility=0;
+    [unroll] for(int y=-1;y<=1;y++) [unroll] for(int x=-1;x<=1;x++)
+        visibility+=_SceneLocalShadow.SampleCmpLevelZero(sampler_SceneLocalShadow,float3(coord.xy+float2(x,y)/512,layer),coord.z+.0006);
+    return lerp(1,visibility/9,_SceneLightShadow[light].z);
+}
+[numthreads(8,8,1)]
+void ShadeLocalLights(uint3 thread:SV_DispatchThreadID) {
+    uint2 pixel=thread.xy;
+    if(any(pixel>=uint2(_RelinkScreen.zw)) || _SceneDepth.Load(int3(pixel,0))<=0) return;
+    uint start=((pixel.y/16)*_TileCountX+pixel.x/16)*33, count=_LightTiles[start];
+    float4 base=_SceneBase.Load(int3(pixel,0)),mask=_SceneMask.Load(int3(pixel,0));
+    float metal=((uint)round(base.a*255)&64)!=0?0:mask.r;
+    float3 world=Position(pixel), normal=normalize(_SceneNormal.Load(int3(pixel,0)).xyz*2-1);
+    normal=mul(transpose((float3x3)_RelinkView),normal);
+    float3 view=normalize(_RelinkCamera.xyz-world),result=0;
+    if(_DebugLocalShadow!=0) {
+        if(_SceneLightShadow[0].y==2) {
+            int hemisphere;float3 p=RelinkParaboloidCoord(world,_SceneLightPositions[0].xyz,_SceneLightShadow[0].w,
+                rsqrt(_SceneLightPositions[0].w),hemisphere);
+            int layer=(int)_SceneLightShadow[0].x+hemisphere;
+            _SceneLightingOutput[pixel]=float3(p.z,RelinkParaboloidSample(_SceneParaboloidShadow,p,layer),LocalVisibility(world+normal*.015,0));return;
+        }
+        float4 c=mul(_SceneLocalMatrices[4],float4(world,1));float3 p=c.xyz/c.w;
+        _SceneLightingOutput[pixel]=float3(p.z,_SceneLocalShadow.Load(int4(int2(p.xy*512),4,0)),LocalVisibility(world+normal*.015,0));return;
+    }
+    [loop] for(uint j=0;j<count;j++) {
+        uint i=_LightTiles[start+1+j]; float3 ray=_SceneLightPositions[i].xyz-world; float d2=max(dot(ray,ray),.01);
+        float3 l=ray*rsqrt(d2); float attenuation=saturate(1-d2*_SceneLightPositions[i].w);
+        attenuation*=attenuation/max(d2,1);
+        float cone=saturate(dot(l,_SceneLightDirections[i].xyz)*_SceneLightSpots[i].x+_SceneLightSpots[i].y);
+        result+=RelinkSourceBRDF(base.rgb,metal,mask.g,normal,view,l,_SceneLightColors[i].rgb*attenuation*cone*cone)*LocalVisibility(world+normal*.015,i);
+    }
+    _SceneLightingOutput[pixel]+=result;
+}

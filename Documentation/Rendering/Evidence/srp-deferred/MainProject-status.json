@@ -1,0 +1,13 @@
+{
+    "project": "D:\\Project\\GitHub\\MyMissionSystem",
+    "scene": "Assets/RelinkStyle/Generated/RelinkMaterialReference.unity",
+    "pipeline": "MyMission.Rendering.RelinkRenderPipeline",
+    "graphicsAPI": "Direct3D11",
+    "gpu": "NVIDIA GeForce RTX 5080",
+    "preview": "D:\\Project\\GitHub\\MyMissionSystem\\Temp\\RelinkDemoPreview\\RelinkMaterialReference.png",
+    "utc": "2026-10-07T06:13:54.8047743Z",
+    "renderingPath": "EvidenceDeferred",
+    "debugView": 0,
+    "graphicsAndQualityMatch": true,
+    "shaderErrors": []
+}

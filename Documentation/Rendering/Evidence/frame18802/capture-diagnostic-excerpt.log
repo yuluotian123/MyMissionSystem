@@ -1,0 +1,11 @@
+Source: RenderDoc_2026.10.07_12.36.34.log, read before the captured game exited.
+The original temporary diagnostic log was removed on game exit. These lines are
+transcribed from the command output recorded during this inspection.
+
+RDOC 049972: [12:36:34]             core.cpp( 719) - Log     - RenderDoc v1.46 Windows 64-bit Release (e4bd23b671d3d5a747ff5221dbe08a63eb6ca200) capturing application
+RDOC 049972: [12:36:36]     d3d11_device.cpp( 163) - Log     - New D3D11 device created: nVidia / NVIDIA GeForce RTX 5080 32.0.16.1088
+RDOC 049972: [12:36:37]     d3d11_device.cpp( 736) - Warning - Trying to get ID3D11Device2. DX11.2 tiled resources are not supported at this time.
+RDOC 049972: [12:41:37]      nvapi_hooks.cpp( 628) - Warning - NvAPI disabled: Returning NULL for nvapi_QueryInterface(NvAPI_D3D11_MultiDrawIndexedInstancedIndirect)
+RDOC 049972: [12:42:31]     d3d11_device.cpp(2038) - Log     - Starting capture
+RDOC 049972: [12:42:34]     d3d11_device.cpp(2120) - Log     - Finished capture, Frame 18802
+RDOC 049972: [12:42:35]             core.cpp(2225) - Log     - Written to disk: D:\Project\GitHub\MyMissionSystem\Temp\RelinkCaptures\relink_frame18802.rdc

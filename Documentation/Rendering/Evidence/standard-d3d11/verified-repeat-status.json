@@ -1,0 +1,12 @@
+{
+  "state": "captured",
+  "target": "granblue_fantasy_relink",
+  "pid": 44284,
+  "existing_capture_ids": [],
+  "api": "D3D11",
+  "requested_at": 1791350351,
+  "path": "D:\\Project\\GitHub\\MyMissionSystem\\Captures\\Relink\\standard_d3d11_frame36437.rdc",
+  "capture_id": 2,
+  "frame": 36437,
+  "timestamp": 1791350357
+}

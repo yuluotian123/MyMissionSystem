@@ -1,0 +1,16 @@
+{
+    "unity": "6000.3.10f1",
+    "gpu": "NVIDIA GeForce RTX 5080",
+    "api": "Direct3D11",
+    "utc": "2026-10-07T08:36:09.1840514Z",
+    "passed": true,
+    "checks": [
+        "PASS: 12-frame wind UV matches analytic displacement; maxError=2.215058E-05 maxVelocity=0.0170166",
+        "PASS: wind history reset uses current deformation",
+        "PASS: bone deformation has current-minus-previous UV sign; expected=.05 actual=0.04995117",
+        "PASS: skin reset removes previous deformation",
+        "PASS: disocclusion rejects red foreground from HDR and post histories; maxError=0",
+        "PASS: 16-frame revealed surface stays stable; maxError=6.103516E-05",
+        "PASS: 512-frame exposure adapts monotonically to a bright step; initial=0.8374023 final=0.2775879 maxIncrease=0"
+    ]
+}

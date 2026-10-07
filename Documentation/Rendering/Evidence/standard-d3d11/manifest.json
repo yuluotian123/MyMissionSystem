@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-07",
+  "tool": "RenderDoc 1.46",
+  "configuration": [
+    "NV.BlockNVAPI=true at launch",
+    "CaptureAllCmdLists=true"
+  ],
+  "configuration_restored": true,
+  "normal_frame_inspected_events": 34,
+  "scope": "Baseline observed without injection; 3 source captures replayed; main GBuffer/shadow inspected. Directional event 20304 now checked at 8 pixels; other variants and whole-frame equivalence remain unverified.",
+  "samples": [
+    {
+      "path": "Captures/Relink/standard_d3d11_frame10803.rdc",
+      "bytes": 1080501545,
+      "sha256": "5546F3AA190A7815CD61A21E32BE48F3D65E7B5523B94F8C1F5DF63734FC4EF1",
+      "api": "GraphicsAPI.D3D11",
+      "actions": 4030,
+      "draws": 3958,
+      "dispatches": 17,
+      "groups": 56,
+      "replay_state": "complete",
+      "final_geometry_visual_check": "complete town ground buildings characters and UI",
+      "analysis_output": "Temp/RelinkAnalysisStandardD3D11"
+    },
+    {
+      "path": "Captures/Relink/standard_d3d11_frame18024.rdc",
+      "bytes": 1094429112,
+      "sha256": "0C56AFD1DBA9EF49ECCCCF3657EB9EC5B4328A8B5178A358F2D0BBE1F5565B8A",
+      "api": "GraphicsAPI.D3D11",
+      "actions": 3881,
+      "draws": 3810,
+      "dispatches": 16,
+      "groups": 56,
+      "replay_state": "complete",
+      "final_geometry_visual_check": "complete town ground buildings characters and UI",
+      "analysis_output": "Temp/RelinkAnalysisStandardD3D11Repeat"
+    },
+    {
+      "path": "Captures/Relink/standard_d3d11_frame36437.rdc",
+      "bytes": 1101613906,
+      "sha256": "63016BD2C65DABE88F9E3CABFC7B4AB35C81CBD13BB27B7092DA47C4D1A8C5E1",
+      "api": "GraphicsAPI.D3D11",
+      "actions": 3916,
+      "draws": 3845,
+      "dispatches": 16,
+      "groups": 56,
+      "replay_state": "complete",
+      "final_geometry_visual_check": "complete town ground buildings characters and UI",
+      "analysis_output": "Temp/RelinkAnalysisStandardD3D11VerifiedRepeat"
+    }
+  ],
+  "directional_pixel_oracle": "directional-pixel-oracle.json"
+}

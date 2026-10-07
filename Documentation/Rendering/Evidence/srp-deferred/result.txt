@@ -1,0 +1,1 @@
+PASS: shaders, image sanity, shadows, sun, fog, prototype regression; deferred numeric contract in contract.txt. GPU: NVIDIA GeForce RTX 5080

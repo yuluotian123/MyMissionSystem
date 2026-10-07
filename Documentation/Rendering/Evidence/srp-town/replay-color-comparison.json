@@ -1,0 +1,8 @@
+{
+  "replay_event": 7459,
+  "resource": "ResourceId::8984",
+  "comparison": "Player PNG vs raw RenderDoc target with vertical-coordinate normalization",
+  "channels_sampled": 2520,
+  "maximum_8bit_error": 0,
+  "mean_8bit_error": 0.0
+}

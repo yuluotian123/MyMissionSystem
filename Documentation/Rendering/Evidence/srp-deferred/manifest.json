@@ -1,0 +1,33 @@
+{
+  "validated_at_utc": "2026-10-07T08:35:57.2422052Z",
+  "unity_version": "m_EditorVersion: 6000.3.10f1",
+  "api": "Direct3D11",
+  "package_dependencies": [],
+  "reference_capture": "standard_d3d11_frame10803.rdc",
+  "rendering_path": "EvidenceDeferred",
+  "result": "PASS: shaders, image sanity, shadows, sun, fog, prototype regression; deferred numeric contract in contract.txt. GPU: NVIDIA GeForce RTX 5080",
+  "checks": [
+    "RELINK_DEMO_SETUP_PASS Graphics + Quality + deferred path + final view",
+    "RELINK_CHECK directional shadows mean delta=0.00213242519239429",
+    "RELINK_CHECK atmospheric fog mean delta=0.107286854280058",
+    "RELINK_CHECK sun lighting mean delta=0.0274425931798652",
+    "RELINK_VALIDATION_PASS NVIDIA GeForce RTX 5080"
+  ],
+  "source_sha256": {
+    "Assets/RelinkStyle/Runtime/RelinkRenderPipeline.cs": "7654F573CACB26761FF75474A858FF21C1291DAC13057AF14786AF313EE5B753",
+    "Assets/RelinkStyle/Runtime/RelinkDeferredRenderer.cs": "A040082C5F0EEE658B7BC3D227A9042756CFF5DFA8585340D1FBA4160E0A3B8B",
+    "Assets/RelinkStyle/Runtime/RelinkRenderPipelineAsset.cs": "C6776BD5021901D648E5E7063103740FA8A46DE5050E5B56DEEC14BA30BD1F5E",
+    "Assets/RelinkStyle/Shaders/RelinkEnvironment.shader": "000472AE0C9FC8C5E4EA34409DD542F228911D24B037B77ACB07B20A70563579",
+    "Assets/RelinkStyle/Shaders/RelinkEnvironment.cginc": "2F9AC09F26462833F0B78C866205E5C17D0C16BE1AE1F8C4F7CAE2F732F2A080",
+    "Assets/RelinkStyle/Shaders/RelinkDeferred.shader": "0F62041D0321582D4D257BFF34CC7253DF35689CE62B5BB39A13CE647B250715",
+    "Assets/RelinkStyle/Shaders/RelinkSourceLighting.cginc": "12A5BBBD53D964A05989CFD12AC1604FAD71DCCB4115140EE49BAE47D9D18123",
+    "Assets/RelinkStyle/Shaders/RelinkComposite.shader": "5FE55E3ABAF054FA2C66FB98F8D827B5C59C8FBC2199DF11D7D7B9433FFFAC19",
+    "Assets/RelinkStyle/Shaders/RelinkSky.shader": "91F3C678D63351CDF783CB9F186A58DE55263A389D6DCF1B4930C91CA99C4830",
+    "Assets/RelinkStyle/Editor/RelinkValidation.cs": "AD5793AC1C977D5A503F09F21CE01A223102519A00B5C11C44E1DAB8314CF095",
+    "Assets/RelinkStyle/Editor/RelinkDeferredValidation.cs": "9E44607A7B31CC51B34C8C2D2A4CB61CFD57840BA07EE289DD29459F63984DCA",
+    "Assets/RelinkStyle/Editor/RelinkReferenceSceneTools.cs": "50B4D979BA6097ADCA2D81006E800E42F60D3563D389FE2138A950C8AB358579",
+    "Assets/RelinkStyle/Editor/RelinkSceneTools.cs": "640D748CE6169DAE1A7179B1E8E037A68435A7AB3721FD06CC15E4F9912317FD",
+    "Assets/RelinkStyle/Editor/RelinkDemoSceneSetup.cs": "10F5AD91E821A8F770249EA2475279AEA5A8BEA98671F6E32CCE7CBCACBAFDB1",
+    "Assets/RelinkStyle/Generated/RelinkScenePipeline.asset": "A90383FE30E802139CF9BB4A9AF655D984A9880B7264B01DB8794CB260CBA9F7"
+  }
+}

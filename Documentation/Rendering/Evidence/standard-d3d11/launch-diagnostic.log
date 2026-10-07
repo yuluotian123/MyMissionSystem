@@ -1,0 +1,84 @@
+RDOC 033172: [13:08:11]             core.cpp( 719) - Log     - RenderDoc v1.46 Windows 64-bit Release (e4bd23b671d3d5a747ff5221dbe08a63eb6ca200) loaded in replay application
+RDOC 033172: [13:08:11]         settings.cpp( 471) - Log     - Loading config from C:\Users\Administrator\AppData\Roaming\renderdoc\renderdoc.conf
+RDOC 033172: [13:08:11]         settings.cpp( 326) - Log     - NV.BlockNVAPI has been customised from False to True
+RDOC 033172: [13:08:11]             core.cpp( 850) - Log     - Replay application 'D:\Project\GitHub\MyMissionSystem\Temp\RelinkTools\RenderDoc\RenderDoc_1.46_64\renderdoccmd.exe' launched
+RDOC 033172: [13:08:11]    win32_process.cpp( 526) - Log     - Running process D:\Steam\steamapps\common\Granblue Fantasy Relink\granblue_fantasy_relink.exe
+RDOC 033172: [13:08:11]    win32_process.cpp( 610) - Log     - Injecting renderdoc into process 44284
+RDOC 005516: [13:08:11]             core.cpp( 719) - Log     - RenderDoc v1.46 Windows 64-bit Release (e4bd23b671d3d5a747ff5221dbe08a63eb6ca200) loaded in replay application
+RDOC 005516: [13:08:11]         settings.cpp( 471) - Log     - Loading config from C:\Users\Administrator\AppData\Roaming\renderdoc\renderdoc.conf
+RDOC 005516: [13:08:11]         settings.cpp( 326) - Log     - NV.BlockNVAPI has been customised from False to True
+RDOC 005516: [13:08:11]             core.cpp( 850) - Log     - Replay application 'D:\Project\GitHub\MyMissionSystem\Temp\RelinkTools\RenderDoc\RenderDoc_1.46_64\renderdoccmd.exe' launched
+RDOC 005516: [13:08:11]             core.cpp( 854) - Log     - Parameter [0]: --crash
+RDOC 033172: [13:08:11]    win32_process.cpp( 314) - Warning - CreateToolhelp32Snapshot(44284) -> 0x00000018
+RDOC 044284: [13:08:11]             core.cpp( 719) - Log     - RenderDoc v1.46 Windows 64-bit Release (e4bd23b671d3d5a747ff5221dbe08a63eb6ca200) capturing application
+RDOC 044284: [13:08:11]      crash_handler.h( 150) - Log     - Timer Waiting for crash handling server - 28.365 ms
+RDOC 044284: [13:08:11]      crash_handler.h( 156) - Log     - Created crash-handling server \\.\pipe\RenderDocBreakpadServer1730229566655
+RDOC 044284: [13:08:11]      crash_handler.h(  87) - Log     - Connecting to server \\.\pipe\RenderDocBreakpadServer1730229566655
+RDOC 044284: [13:08:11]         settings.cpp( 471) - Log     - Loading config from C:\Users\Administrator\AppData\Roaming\renderdoc\renderdoc.conf
+RDOC 044284: [13:08:11]         settings.cpp( 326) - Log     - NV.BlockNVAPI has been customised from False to True
+RDOC 044284: [13:08:11]   win32_libentry.cpp(  68) - Log     - Loading into D:\Steam\steamapps\common\Granblue Fantasy Relink\granblue_fantasy_relink.exe
+RDOC 044284: [13:08:11]  sys_win32_hooks.cpp(  84) - Log     - Registering Win32 system hooks
+RDOC 044284: [13:08:11]      d3d11_hooks.cpp(  44) - Log     - Registering D3D11 hooks
+RDOC 044284: [13:08:11]       d3d9_hooks.cpp(  40) - Log     - Registering D3D9 hooks
+RDOC 044284: [13:08:11]        amd_hooks.cpp( 154) - Log     - Registering AMD hooks
+RDOC 044284: [13:08:11]      nvapi_hooks.cpp( 145) - Log     - Registering nvidia hooks
+RDOC 044284: [13:08:11]      d3d12_hooks.cpp( 555) - Log     - Registering D3D12 hooks
+RDOC 044284: [13:08:11]       dxgi_hooks.cpp( 250) - Log     - Registering DXGI hooks
+RDOC 044284: [13:08:11]        egl_hooks.cpp(1088) - Log     - Registering EGL hooks
+RDOC 044284: [13:08:11]         gl_hooks.cpp( 285) - Log     - Registering OpenGL hooks
+RDOC 044284: [13:08:11]        wgl_hooks.cpp( 658) - Log     - Registering WGL hooks
+RDOC 044284: [13:08:11]         vk_layer.cpp( 110) - Log     - Registering Vulkan hooks
+RDOC 044284: [13:08:11]      crash_handler.h(  51) - Log     - Re-using crash-handling server \\.\pipe\RenderDocBreakpadServer1730229566655
+RDOC 044284: [13:08:11]      crash_handler.h(  87) - Log     - Connecting to server \\.\pipe\RenderDocBreakpadServer1730229566655
+RDOC 044284: [13:08:11]      dxgi_common.cpp(1688) - Warning - Querying IDXGIAdapter for unsupported/undocumented interface: IDXGIAdapterInternal2
+RDOC 044284: [13:08:12]             core.cpp(2317) - Log     - Adding D3D11 device frame capturer for 0x000002A4FDD48780
+RDOC 044284: [13:08:12]     d3d11_device.cpp( 163) - Log     - New D3D11 device created: nVidia / NVIDIA GeForce RTX 5080 32.0.16.1088
+RDOC 044284: [13:08:12]             core.cpp(2334) - Log     - Removing device frame capturer for 0x000002A4FDD48780
+RDOC 044284: [13:08:12]             core.cpp(2317) - Log     - Adding D3D11 device frame capturer for 0x000002A4FDD48780
+RDOC 044284: [13:08:12]     d3d11_device.cpp( 163) - Log     - New D3D11 device created: AMD / AMD Radeon(TM) Graphics 32.0.21025.15011
+RDOC 044284: [13:08:12]             core.cpp(2334) - Log     - Removing device frame capturer for 0x000002A4FDD48780
+RDOC 044284: [13:08:12]             core.cpp(2317) - Log     - Adding D3D11 device frame capturer for 0x000002A4FDD48780
+RDOC 044284: [13:08:12]     d3d11_device.cpp( 163) - Log     - New D3D11 device created: nVidia / NVIDIA GeForce RTX 5080 32.0.16.1088
+RDOC 044284: [13:08:12]             core.cpp(2334) - Log     - Removing device frame capturer for 0x000002A4FDD48780
+RDOC 044284: [13:08:12]             core.cpp(2317) - Log     - Adding D3D11 device frame capturer for 0x000002A4FDD48780
+RDOC 044284: [13:08:12]     d3d11_device.cpp( 163) - Log     - New D3D11 device created: nVidia / NVIDIA GeForce RTX 5080 32.0.16.1088
+RDOC 044284: [13:08:12]             core.cpp(2353) - Log     - Adding D3D11 frame capturer for 0x000002A4FDD48780 / 0x00000000000C1E54
+RDOC 044284: [13:08:13]     d3d11_device.cpp( 736) - Warning - Trying to get ID3D11Device2. DX11.2 tiled resources are not supported at this time.
+RDOC 044284: [13:08:13]     d3d11_device.cpp( 859) - Warning - Returning a dummy ID3D11Debug that does nothing. This ID3D11Debug will not work!
+RDOC 044284: [13:11:35]    win32_network.cpp( 223) - Warning - send failed: WSAECONNRESET: An existing connection was forcibly closed by the remote host.
+RDOC 044284: [13:11:51]     d3d11_device.cpp(2038) - Log     - Starting capture
+RDOC 044284: [13:11:51]   resource_manager.h(1452) - Log     - Preparing up to 202 potentially dirty resources
+RDOC 044284: [13:11:52]   resource_manager.h(1509) - Log     - Prepared 200 dirty resources, postponed 0, skipped 0
+RDOC 044284: [13:11:57]     d3d11_device.cpp(2120) - Log     - Finished capture, Frame 10803
+RDOC 044284: [13:11:57]   resource_manager.h(1521) - Log     - Checking 200 resources with initial contents against 1660 referenced resources
+RDOC 044284: [13:11:57]   resource_manager.h(1628) - Log     - Serialised 99 resources, skipped 101 unreferenced
+RDOC 044284: [13:11:58]          rdcfile.cpp(1307) - Log     - Finishing write to section 1 (renderdoc/internal/framecapture). Compressed from 3801611136 bytes to 1079929489 (28.41 %)
+RDOC 044284: [13:11:58]     d3d11_device.cpp(2361) - Log     - Captured D3D11 frame with 3625.498901 MB capture section in 6.054584 seconds
+RDOC 044284: [13:11:58]             core.cpp(2225) - Log     - Written to disk: D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame10803.rdc
+RDOC 044284: [13:11:58]          rdcfile.cpp( 246) - Log     - Opening RDCFile D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame10803.rdc
+RDOC 044284: [13:11:58]    win32_network.cpp( 264) - Warning - recv peek failed: WSAECONNRESET: An existing connection was forcibly closed by the remote host.
+RDOC 044284: [13:13:58]          rdcfile.cpp( 246) - Log     - Opening RDCFile D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame10803.rdc
+RDOC 044284: [13:13:58]     d3d11_device.cpp(2038) - Log     - Starting capture
+RDOC 044284: [13:13:58]   resource_manager.h(1452) - Log     - Preparing up to 219 potentially dirty resources
+RDOC 044284: [13:13:58]   resource_manager.h(1509) - Log     - Prepared 216 dirty resources, postponed 0, skipped 0
+RDOC 044284: [13:14:03]     d3d11_device.cpp(2120) - Log     - Finished capture, Frame 18024
+RDOC 044284: [13:14:03]   resource_manager.h(1521) - Log     - Checking 200 resources with initial contents against 1558 referenced resources
+RDOC 044284: [13:14:04]   resource_manager.h(1628) - Log     - Serialised 98 resources, skipped 102 unreferenced
+RDOC 044284: [13:14:04]          rdcfile.cpp(1307) - Log     - Finishing write to section 1 (renderdoc/internal/framecapture). Compressed from 3793544576 bytes to 1093852828 (28.83 %)
+RDOC 044284: [13:14:04]     d3d11_device.cpp(2361) - Log     - Captured D3D11 frame with 3617.806030 MB capture section in 5.514828 seconds
+RDOC 044284: [13:14:04]             core.cpp(2225) - Log     - Written to disk: D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame18024.rdc
+RDOC 044284: [13:16:09]    win32_network.cpp( 264) - Warning - recv peek failed: WSAECONNABORTED: An established connection was aborted by the software in your host machine.
+RDOC 044284: [13:17:08]    win32_network.cpp( 264) - Warning - recv peek failed: WSAECONNABORTED: An established connection was aborted by the software in your host machine.
+RDOC 044284: [13:19:11]          rdcfile.cpp( 246) - Log     - Opening RDCFile D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame10803.rdc
+RDOC 044284: [13:19:11]          rdcfile.cpp( 246) - Log     - Opening RDCFile D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame18024.rdc
+RDOC 044284: [13:19:11]     d3d11_device.cpp(2038) - Log     - Starting capture
+RDOC 044284: [13:19:11]   resource_manager.h(1452) - Log     - Preparing up to 243 potentially dirty resources
+RDOC 044284: [13:19:11]   resource_manager.h(1509) - Log     - Prepared 240 dirty resources, postponed 0, skipped 0
+RDOC 044284: [13:19:16]     d3d11_device.cpp(2120) - Log     - Finished capture, Frame 36437
+RDOC 044284: [13:19:17]   resource_manager.h(1521) - Log     - Checking 224 resources with initial contents against 1585 referenced resources
+RDOC 044284: [13:19:17]   resource_manager.h(1628) - Log     - Serialised 98 resources, skipped 126 unreferenced
+RDOC 044284: [13:19:17]          rdcfile.cpp(1307) - Log     - Finishing write to section 1 (renderdoc/internal/framecapture). Compressed from 3794881408 bytes to 1101039860 (29.01 %)
+RDOC 044284: [13:19:17]     d3d11_device.cpp(2361) - Log     - Captured D3D11 frame with 3619.080933 MB capture section in 5.850473 seconds
+RDOC 044284: [13:19:17]             core.cpp(2225) - Log     - Written to disk: D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame36437.rdc
+RDOC 044284: [13:19:17]          rdcfile.cpp( 246) - Log     - Opening RDCFile D:\Project\GitHub\MyMissionSystem\Captures\Relink\standard_d3d11_frame36437.rdc
+RDOC 044284: [13:19:17]    win32_network.cpp( 264) - Warning - recv peek failed: WSAECONNRESET: An existing connection was forcibly closed by the remote host.

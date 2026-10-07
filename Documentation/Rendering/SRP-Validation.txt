@@ -1,0 +1,1 @@
+PASS: shaders, image sanity, shadows, sun, fog. GPU: NVIDIA GeForce RTX 5080

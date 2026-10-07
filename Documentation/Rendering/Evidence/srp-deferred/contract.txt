@@ -1,0 +1,19 @@
+GPU: NVIDIA GeForce RTX 5080 / Direct3D11
+sRGB albedo decoded once: actual=RGBA(0.216, 0.051, 0.527, 1.000) expected=RGBA(0.216, 0.051, 0.527, 1.000) max error=0.0002285242
+linear mask M/R/indirect: actual=RGBA(0.251, 0.600, 0.400, 1.000) expected=RGBA(0.251, 0.600, 0.400, 1.000) max error=0
+view-space normal: actual=RGBA(0.499, 0.499, 1.000, 1.000) expected=RGBA(0.500, 0.500, 1.000, 1.000) max error=0.0007324219
+linear depth at 5 units: actual=RGBA(0.050, 0.050, 0.050, 1.000) expected=RGBA(0.050, 0.050, 0.050, 1.000) max error=3.906339E-05
+sampled hardware stencil category 10: actual=RGBA(0.417, 0.417, 0.417, 1.000) expected=RGBA(0.417, 0.417, 0.417, 0.417) max error=2.980232E-08
+static camera UV velocity: actual=RGBA(0.500, 0.500, 0.500, 1.000) expected=RGBA(0.500, 0.500, 0.500, 1.000) max error=0
+captured directional BRDF (R11/G11/B10 precision): actual=RGBA(0.162, 0.039, 0.398, 1.000) expected=RGBA(0.163, 0.039, 0.399, 0.757) max error=0.001290306
+stencil category light exclusion: actual=RGBA(0.000, 0.000, 0.000, 1.000) expected=RGBA(0.000, 0.000, 0.000, 1.000) max error=0
+flag 64 forces nonmetal (B10 mantissa step): actual=RGBA(0.137, 0.032, 0.328, 1.000) expected=RGBA(0.137, 0.033, 0.336, 0.637) max error=0.007446975
+flag byte survives sRGB alpha: actual=RGBA(0.251, 0.251, 0.251, 1.000) expected=RGBA(0.251, 0.251, 0.251, 0.251) max error=0
+subtract-light input and zero clamp: actual=RGBA(0.103, 0.016, 0.000, 1.000) expected=RGBA(0.103, 0.016, 0.000, 1.000) max error=0.0005267486
+captured filmic without double sRGB: actual=RGBA(0.051, 0.012, 0.118, 1.000) expected=RGBA(0.051, 0.012, 0.118, 1.000) max error=8.381903E-09
+camera translation velocity sign and scale: actual=RGBA(-0.500, 0.500, 0.500, 1.000) expected=RGBA(-0.500, 0.500, 0.500, 1.000) max error=0.0002441406
+static camera after translation: actual=RGBA(0.500, 0.500, 0.500, 1.000) expected=RGBA(0.500, 0.500, 0.500, 1.000) max error=0
+resize invalidates velocity history: actual=RGBA(0.500, 0.500, 0.500, 1.000) expected=RGBA(0.500, 0.500, 0.500, 1.000) max error=0
+explicit camera cut resets velocity history: actual=RGBA(0.500, 0.500, 0.500, 1.000) expected=RGBA(0.500, 0.500, 0.500, 1.000) max error=0
+alpha cutout clears depth and classification: actual=RGBA(0.000, 0.000, 0.000, 1.000) expected=RGBA(0.000, 0.000, 0.000, 1.000) max error=0
+PASS: 17 numeric GPU contract checks.

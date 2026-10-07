@@ -1,0 +1,23 @@
+[
+  {
+    "resolution": "1280x720",
+    "rdc": "Native-1280x720_capture.rdc",
+    "bytes": 65273746,
+    "sha256": "077898DC46AA0F6A0BB612BEB0FFECC77DBA3CDAD88E64E3447E943BAAC56993",
+    "gpu_replay_median_ms": 3.977167999999996
+  },
+  {
+    "resolution": "1920x1080",
+    "rdc": "Native-1920x1080_capture.rdc",
+    "bytes": 127467807,
+    "sha256": "BA63CF94E830F9185DE720776433C5FA78435FB6E6A673387AFBBF3582882CFD",
+    "gpu_replay_median_ms": 4.606703999999995
+  },
+  {
+    "resolution": "2560x1440",
+    "rdc": "Native-2560x1440_capture.rdc",
+    "bytes": 211993949,
+    "sha256": "573657BC7B1C8F9F1FF383539F44D6F5095A7A64B02290C0B760060A139DEE7D",
+    "gpu_replay_median_ms": 5.131568000000001
+  }
+]
